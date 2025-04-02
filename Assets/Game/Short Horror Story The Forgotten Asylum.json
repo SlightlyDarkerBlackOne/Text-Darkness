@@ -1,0 +1,470 @@
+{
+  "rooms": {
+    "patient_room": {
+      "description": "A dim light flickers overhead, casting twitching shadows on cracked walls. A rusty metal bed, strapped with leather restraints, sits in the center. A locked door looms. A mirror is bolted to the wall.",
+      "choices": {
+        "look_mirror": {
+          "id": "look_mirror",
+          "text_variations": [
+            "look mirror",
+            "look in mirror",
+            "look in the mirror",
+            "look into mirror",
+            "look into the mirror",
+            "gaze mirror",
+            "gaze at mirror",
+            "gaze the mirror",
+            "gaze into the mirror",
+            "observe mirror",
+            "observe the mirror",
+            "observe into the mirror",
+            "observe into the mirror",
+            "examine mirror", 
+            "examine the mirror",
+            "check mirror",
+            "check the mirror",
+            "stare at mirror",
+            "stare at the mirror",
+            "peer into mirror",
+            "peer into the mirror"
+          ],
+          "text": "Look into the mirror.",
+          "result": "Your reflection lags behind… something moves behind you.",
+          "unlocks": ["touch_mirror"]
+        },
+        "look_light": {
+          "id": "look_light",
+          "text_variations": [
+            "look light",
+            "look at light",
+            "look into light",
+            "gaze light",
+            "gaze at light",
+            "observe light",
+            "examine light",
+            "check light",
+            "stare at light",
+            "peer into light",
+            "look at the light",
+            "look into the light",
+            "gaze at the light",
+            "gaze into the light",
+            "observe at the light",
+            "observe into the light",
+            "check the light",
+            "stare at the light",
+            "peer into the light"
+          ],
+          "text": "Look into the light.",
+          "result": "It's just a light."
+        },
+        "look_bed": {
+          "id": "look_bed",
+          "text_variations": [
+            "look bed",
+            "look at bed",
+            "look into bed",
+            "gaze bed",
+            "gaze at bed",
+            "observe bed",
+            "examine bed",
+            "check bed",
+            "stare at bed",
+            "peer into bed",
+            "look at the bed",
+            "look into the bed",
+            "gaze at the bed",
+            "gaze into the bed",
+            "observe at the bed",
+            "observe into the bed",
+            "check the bed",
+            "stare at the bed",
+            "peer into the bed" 
+          ],
+          "text": "Look at the bed.",
+          "result": "You see a rusty bed with worn out nightstand and it seems to be some kind of journal on it. You begin thinking the room is a regular hospital patient room.",
+          "unlocks": ["read_journal"],
+          "reveals_title": "Patient Room"
+        },
+        "read_journal": {
+          "id": "read_journal",
+          "text_variations": [
+            "read journal",
+            "check journal",
+            "examine journal",
+            "look journal",
+            "look at journal",
+            "open journal",
+            "inspect journal"
+          ],
+          "text": "Read the journal on the nightstand.",
+          "result": "The last page reads: 'The cure is worse than the disease.'",
+          "requires_choices": ["look_bed"],
+          "adds_to_inventory": "journal"
+        },
+        "search_bed": {
+          "id": "search_bed",
+          "text_variations": [
+            "search bed",
+            "look under bed",
+            "check under bed",
+            "examine bed",
+            "inspect under bed",
+            "investigate bed",
+            "peek under bed",
+            "explore under bed",
+            "look under the bed",
+            "check under the bed",
+            "examine under the bed",
+            "inspect under the bed",
+            "investigate under the bed",
+            "peek under the bed",
+            "explore under the bed" 
+          ],
+          "text": "Look under the bed.",
+          "result": "A bloody scalpel lies beneath.",
+          "adds_to_inventory": "scalpel"
+        },
+        "touch_mirror": {
+          "id": "touch_mirror",
+          "text_variations": [
+            "touch mirror",
+            "touch the mirror",
+            "feel mirror",
+            "reach for mirror",
+            "place hand on mirror",
+            "tap mirror",
+            "reach out to mirror",
+            "put hand on mirror",
+            "touch the mirror",
+            "feel the mirror",
+            "reach for the mirror",
+            "place hand on the mirror",
+            "tap the mirror",
+            "reach out to the mirror",
+            "put hand on the mirror"
+          ],
+          "text": "Touch the mirror.",
+          "result": "The glass ripples, revealing hidden words: 'Step inside.'",
+          "requires_choices": ["look_mirror"],
+          "unlocks": ["enter_mirror"]
+        },
+        "enter_mirror": {
+          "id": "enter_mirror",
+          "text_variations": [
+            "enter mirror",
+            "step into mirror",
+            "go through mirror",
+            "walk into mirror",
+            "pass through mirror",
+            "move into mirror",
+            "step through mirror",
+            "enter the mirror",
+            "step through the mirror",
+            "go through the mirror",
+            "walk into the mirror",
+            "pass through the mirror",
+            "move into the mirror",
+            "step through the mirror"
+          ],
+          "text": "Step into the mirror.",
+          "result": "The world twists… You're somewhere else now.",
+          "requires_choices": ["touch_mirror"],
+          "sets_global_flag": "mirror_entered",
+          "next_room": "shadow_hallway"
+        }
+      }
+    },
+    "shadow_hallway": {
+      "title": "Shadow Hallway",
+      "description": "The hallway stretches endlessly. Scratches cover the walls, and whispers echo around you.",
+      "choices": {
+        "follow_whispers": {
+          "id": "follow_whispers",
+          "text_variations": [
+            "follow whispers",
+            "listen to whispers",
+            "track whispers",
+            "pursue whispers",
+            "go to whispers",
+            "follow the sound",
+            "trace whispers",
+            "walk towards whispers",
+            "follow the whispers",
+            "listen to the whispers",
+            "track the whispers",
+            "pursue the whispers",
+            "go to the whispers",
+            "walk towards the whispers"
+          ],
+          "text": "Follow the whispers.",
+          "result": "They guide you to symbols carved into the walls.",
+          "unlocks": ["trace_symbols"]
+        },
+        "trace_symbols": {
+          "id": "trace_symbols",
+          "text_variations": [
+            "trace symbols",
+            "copy symbols",
+            "draw symbols",
+            "follow symbols",
+            "replicate symbols",
+            "reproduce symbols",
+            "sketch symbols",
+            "mark symbols",
+            "trace the symbols",
+            "copy the symbols",
+            "draw the symbols",
+            "follow the symbols",
+            "replicate the symbols",
+            "reproduce the symbols",
+            "sketch the symbols"
+          ],
+          "text": "Trace the symbols in the correct order.",
+          "requires_choices": ["follow_whispers"],
+          "result": "The wall splits open, revealing a hidden passage.",
+          "puzzle": {
+            "type": "symbol_sequence",
+            "correct_order": ["X", "Δ", "O", "∇"]
+          },
+          "next_room": "operating_room"
+        },
+        "run_away": {
+          "id": "run_away",
+          "text_variations": [
+            "run away",
+            "run down hallway",
+            "run down the hallway",
+            "escape",
+            "escape hallway",
+            "escape the hallway",
+            "flee",
+            "flee hallway",
+            "flee the hallway",
+            "run back",
+            "get out",
+            "get out of hallway",
+            "get out of the hallway",
+            "leave hallway",
+            "leave the hallway",
+            "retreat",
+            "retreat from the hallway"
+
+          ],
+          "text": "Run down the hallway.",
+          "result": "No matter how far you go, you end up back where you started."
+        }
+      }
+    },
+    "operating_room": {
+      "title": "Operating Room",
+      "description": "Rusty surgical tools are scattered across a table. A restrained body twitches on the operating table.",
+      "choices": {
+        "inspect_tools": {
+          "id": "inspect_tools",
+          "text_variations": [
+            "inspect tools",
+            "examine tools",
+            "look at tools",
+            "check tools",
+            "investigate tools",
+            "observe tools",
+            "study tools",
+            "search tools",
+            "look at the tools",
+            "look into the tools",
+            "gaze at the tools",
+            "gaze into the tools",
+            "observe at the tools",
+            "observe into the tools"
+          ],
+          "text": "Inspect the surgical tools.",
+          "result": "A scalpel is missing."
+        },
+        "cut_restraints": {
+          "id": "cut_restraints",
+          "text_variations": [
+            "cut restraints",
+            "cut the restraints",
+            "free patient",
+            "free patient from the restraints",
+            "release patient",
+            "release patient from the restraints",
+            "cut straps",
+            "cut the straps",
+            "use scalpel on restraints",
+            "cut loose",
+            "free the patient",
+            "slice restraints",
+            "slice the restraints"
+          ],
+          "text": "Cut the patient's restraints.",
+          "requires_item": "scalpel",
+          "result": "The patient gasps: 'Don't trust the doctor...'",
+          "unlocks": ["search_cabinet"]
+        },
+        "search_cabinet": {
+          "id": "search_cabinet",
+          "text_variations": [
+            "search cabinet",
+            "search the cabinet",
+            "open cabinet",
+            "open the cabinet",
+            "check cabinet",
+            "check the cabinet",
+            "examine cabinet",
+            "examine the cabinet",
+            "look in cabinet",
+            "look into cabinet",
+            "investigate cabinet",
+            "inspect cabinet",
+            "inspect the cabinet",
+            "explore cabinet",
+            "explore the cabinet"
+          ],
+          "text": "Search the locked cabinet.",
+          "requires_choices": ["cut_restraints"],
+          "result": "It requires a four-digit code.",
+          "puzzle": {
+            "type": "number_code",
+            "correct_code": "4732"
+          },
+          "adds_to_inventory": "exit_key"
+        },
+        "leave_room": {
+          "id": "leave_room",
+          "text_variations": [
+            "leave room",
+            "exit room",
+            "try door",
+            "open door",
+            "use door",
+            "go to door",
+            "go through door",
+            "go through the door",
+            "escape room",
+            "get out",
+            "get out of room",
+            "get out of the room",
+            "leave the room"
+          ],
+          "text": "Try to leave.",
+          "result": "The door is locked. You need a key.",
+          "requires_item": "exit_key",
+          "next_room": "forgotten_exit"
+        }
+      }
+    },
+    "forgotten_exit": {
+      "description": "A waiting room stands eerily still. A single door labeled 'EXIT' waits ahead. The Doctor is here, smiling.",
+      "choices": {
+        "use_exit_key": {
+          "id": "use_exit_key",
+          "text_variations": [
+            "use key",
+            "use exit key",
+            "try key",
+            "insert key",
+            "unlock door",
+            "open door with key",
+            "use key on door",
+            "unlock exit"
+          ],
+          "text": "Use the exit key.",
+          "result": "The Doctor laughs. The key melts in your hand.",
+          "unlocks": ["attack_doctor", "check_desk"]
+        },
+        "attack_doctor": {
+          "id": "attack_doctor",
+          "text_variations": [
+            "attack doctor",
+            "stab doctor",
+            "use scalpel on doctor",
+            "kill doctor",
+            "fight doctor",
+            "strike doctor",
+            "assault doctor",
+            "attack with scalpel"
+          ],
+          "text": "Attack the Doctor with the scalpel.",
+          "requires_item": "scalpel",
+          "requires_choices": ["use_exit_key"],
+          "result": "You stab… but he doesn't bleed. 'That won't work.'"
+        },
+        "check_desk": {
+          "id": "check_desk",
+          "text_variations": [
+            "check desk",
+            "examine desk",
+            "look at desk",
+            "search desk",
+            "investigate desk",
+            "inspect desk",
+            "explore desk",
+            "go to desk"
+          ],
+          "text": "Check the receptionist's desk.",
+          "requires_choices": ["use_exit_key"],
+          "result": "A patient file… with your name. It reads: 'Subject #47 – Still unaware of reality.'",
+          "unlocks": ["burn_file"]
+        },
+        "burn_file": {
+          "id": "burn_file",
+          "text_variations": [
+            "burn file",
+            "destroy file",
+            "set file on fire",
+            "incinerate file",
+            "light file",
+            "burn the file",
+            "destroy the file",
+            "burn papers"
+          ],
+          "text": "Burn the file.",
+          "requires_choices": ["check_desk"],
+          "result": "The world shatters. The asylum was never real.",
+          "sets_global_flag": "truth_revealed",
+          "next_room": "final_truth"
+        }
+      }
+    },
+    "final_truth": {
+      "description": "You awaken in a real hospital room. A nurse looks at you. 'Doctor… are you alright?'",
+      "choices": {
+        "accept_truth": {
+          "id": "accept_truth",
+          "text_variations": [
+            "accept truth",
+            "nod",
+            "acknowledge truth",
+            "accept reality",
+            "understand truth",
+            "accept fate",
+            "embrace truth",
+            "accept"
+          ],
+          "text": "Accept the truth.",
+          "result": "You were never the patient… you were the Doctor. The asylum was your guilt trapping you.",
+          "ending": "good"
+        },
+        "deny_truth": {
+          "id": "deny_truth",
+          "text_variations": [
+            "deny truth",
+            "reject truth",
+            "refuse truth",
+            "deny reality",
+            "shake head",
+            "say no",
+            "reject",
+            "deny"
+          ],
+          "text": "Deny the truth.",
+          "result": "You wake up in Room 1 again. The cycle repeats.",
+          "ending": "bad",
+          "next_room": "patient_room"
+        }
+      }
+    }
+  }
+}
