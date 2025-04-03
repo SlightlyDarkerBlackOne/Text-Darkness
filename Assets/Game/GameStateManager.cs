@@ -53,6 +53,16 @@ public class GameStateManager : MonoBehaviour
     private HashSet<string> m_completedChoices = new HashSet<string>();
     private string m_currentTypingText = "";
     
+    public bool IsTyping => m_isTyping;
+    
+    private HashSet<string> m_inventory = new HashSet<string>();
+    
+    public RoomData CurrentRoom => m_currentRoom;
+    public bool LastChoiceWasValid { get; private set; }
+    public bool IsInRoom(string roomKey) => m_currentRoom == m_gameRooms[roomKey];
+    
+    public bool HasItem(string itemName) => m_inventory.Contains(itemName);
+    
     private void Start()
     {
         m_mainText.text = "";
@@ -190,17 +200,11 @@ public class GameStateManager : MonoBehaviour
             typedSoFar += c;
             m_currentTypingText = _text.Substring(currentIndex);
 
-            if (_choice != null && 
-                !string.IsNullOrEmpty(_choice.reveals_title) &&
-                typedSoFar.ToLower().EndsWith(_choice.reveals_title.ToLower()))
-            {
-                m_currentRoom.title = _choice.reveals_title;
-                m_titleFader.FadeIn(_choice.reveals_title, m_titleText);
-            }   
+            CheckForTitleReveal(_choice, typedSoFar);
 
             yield return new WaitForSeconds(m_typingSpeed);
         }
-        
+
         m_currentTypingText = "";
         m_typingCoroutine = null;
         m_allowEnter = true;
@@ -210,8 +214,21 @@ public class GameStateManager : MonoBehaviour
         StartNextText();
     }
 
+    private void CheckForTitleReveal(Choice _choice, string _typedSoFar)
+    {
+        if (_choice != null &&
+            !string.IsNullOrEmpty(_choice.reveals_title) &&
+            _typedSoFar.ToLower().EndsWith(_choice.reveals_title.ToLower()))
+        {
+            m_currentRoom.title = _choice.reveals_title;
+            m_titleFader.FadeIn(_choice.reveals_title, m_titleText);
+        }
+    }
+
     public void ProcessChoice(string _inputText)
     {
+        LastChoiceWasValid = false;
+        
         // Handle developer commands
         if (_inputText.StartsWith("/"))
         {
@@ -265,9 +282,10 @@ public class GameStateManager : MonoBehaviour
         // Add this choice to completed choices
         m_completedChoices.Add(matchedChoice.id);
 
-        // Check if this choice adds an item to inventory
+        // Add items to inventory
         if (!string.IsNullOrEmpty(matchedChoice.adds_to_inventory))
         {
+            m_inventory.Add(matchedChoice.adds_to_inventory);
             m_notificationManager.ShowNotification(matchedChoice.adds_to_inventory);
         }
 
@@ -299,6 +317,8 @@ public class GameStateManager : MonoBehaviour
             //m_currentRoom.title = matchedChoice.reveals_title;
             //m_titleFader.FadeIn(matchedChoice.reveals_title, m_titleText, 8f);
         }
+
+        LastChoiceWasValid = true;
     }
 
     private void ProcessDevCommand(string _command)
