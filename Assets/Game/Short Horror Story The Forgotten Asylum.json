@@ -98,7 +98,7 @@
             "inspect journal"
           ],
           "text": "Read the journal on the nightstand.",
-          "result": "The last page reads: 'The cure is worse than the disease.'",
+          "result": "Somewhere in the middle of the journal, you see something scribbled in pencil. It's barely visible looking as if it was almost rubbed away. It reads subject #47 and age 32 years old. The last page reads: 'The cure is worse than the disease.'",
           "requires_choices": ["look_bed"],
           "adds_to_inventory": "journal"
         },
@@ -222,11 +222,7 @@
           ],
           "text": "Trace the symbols in the correct order.",
           "requires_choices": ["follow_whispers"],
-          "result": "The wall splits open, revealing a hidden passage.",
-          "puzzle": {
-            "type": "symbol_sequence",
-            "correct_order": ["X", "Δ", "O", "∇"]
-          },
+          "result": "As you trace the symbols, the wall splits open, revealing a hidden passage.",
           "next_room": "operating_room"
         },
         "run_away": {

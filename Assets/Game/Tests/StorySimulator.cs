@@ -16,7 +16,7 @@ public class StorySimulator : MonoBehaviour
             StartCoroutine(SimulateMainPath());
         }
     }
-    
+
     [ContextMenu("Start Simulation")]
     public void StartSimulation()
     {
@@ -36,9 +36,9 @@ public class StorySimulator : MonoBehaviour
         yield return SimulateChoice("look bed");
         Assert.IsTrue(m_gameManager.CurrentRoom.title == "Patient Room", "Title should be revealed after looking at bed");
         
+        yield return SimulateChoice("read journal");
         yield return SimulateChoice("look mirror");
         yield return SimulateChoice("touch mirror");
-        yield return SimulateChoice("read journal");
         Assert.IsTrue(m_gameManager.HasItem("journal"), "Journal should be in inventory");
         
         yield return SimulateChoice("search bed");
@@ -48,6 +48,7 @@ public class StorySimulator : MonoBehaviour
 
         // Shadow Hallway sequence
         Assert.IsTrue(m_gameManager.CurrentRoom.title == "Shadow Hallway", "Should be in Shadow Hallway");
+        yield return SimulateChoice("run away");
         yield return SimulateChoice("follow whispers");
         yield return SimulateChoice("trace symbols");
 
@@ -56,6 +57,8 @@ public class StorySimulator : MonoBehaviour
         yield return SimulateChoice("inspect tools");
         yield return SimulateChoice("cut restraints");
         yield return SimulateChoice("search cabinet");
+        yield return SimulateChoice("4732");
+
         Assert.IsTrue(m_gameManager.HasItem("exit_key"), "Exit key should be in inventory");
         yield return SimulateChoice("leave room");
 

@@ -52,15 +52,15 @@ public class GameStateManager : MonoBehaviour
     private bool m_isTyping = false;
     private HashSet<string> m_completedChoices = new HashSet<string>();
     private string m_currentTypingText = "";
-    
-    public bool IsTyping => m_isTyping;
-    
     private HashSet<string> m_inventory = new HashSet<string>();
+    private Dictionary<string, bool> m_puzzleStates = new Dictionary<string, bool>();
+    private Choice m_currentPuzzle = null;
+    private bool m_isFirstRoom = true;
     
     public RoomData CurrentRoom => m_currentRoom;
     public bool LastChoiceWasValid { get; private set; }
+    public bool IsTyping => m_isTyping;
     public bool IsInRoom(string roomKey) => m_currentRoom == m_gameRooms[roomKey];
-    
     public bool HasItem(string itemName) => m_inventory.Contains(itemName);
     
     private void Start()
@@ -102,7 +102,7 @@ public class GameStateManager : MonoBehaviour
                 var roomEnumerator = m_gameRooms.GetEnumerator();
                 roomEnumerator.MoveNext();
                 m_currentRoom = roomEnumerator.Current.Value;
-                DisplayCurrentRoom();
+            DisplayCurrentRoom();
             }
             else
             {
@@ -124,13 +124,17 @@ public class GameStateManager : MonoBehaviour
         {
             m_titleFader.FadeIn(m_currentRoom.title, m_titleText);
         }
+        
+        // Queue the room description with newlines if not first room
+        if (!m_isFirstRoom)
+        {
+            m_textQueue.Enqueue("\n\n\n" + m_currentRoom.description);
+        }
         else
         {
-            m_titleFader.Clear(m_titleText);
+            m_textQueue.Enqueue(m_currentRoom.description);
+            m_isFirstRoom = false;
         }
-        
-        // Queue the room description instead of starting it immediately
-        m_textQueue.Enqueue(m_currentRoom.description);
         
         // Set current choices
         m_currentChoices = m_currentRoom.choices;
@@ -225,6 +229,26 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    private bool IsPuzzleComplete(Choice _choice, string _input)
+    {
+        if (_choice.puzzle == null) return true;
+        
+        var puzzle = _choice.puzzle;
+        if (puzzle["type"].ToString() == "number_code")
+        {
+            string correctCode = puzzle["correct_code"].ToString();
+            return _input == correctCode;
+        }
+        else if (puzzle["type"].ToString() == "symbol_sequence")
+        {
+            //string correctSequence = puzzle["correct_sequence"].ToString();
+            //return _input == correctSequence;
+            return true;
+        }
+        
+        return false;
+    }
+
     public void ProcessChoice(string _inputText)
     {
         LastChoiceWasValid = false;
@@ -234,6 +258,43 @@ public class GameStateManager : MonoBehaviour
         {
             ProcessDevCommand(_inputText);
             m_promptInputField.text = "";
+            return;
+        }
+
+        // If we're in a puzzle state, check the puzzle input
+        if (m_currentPuzzle != null)
+        {
+            if (IsPuzzleComplete(m_currentPuzzle, _inputText))
+            {
+                m_puzzleStates[m_currentPuzzle.id] = true;
+                
+                // Add items to inventory if puzzle is complete
+                if (!string.IsNullOrEmpty(m_currentPuzzle.adds_to_inventory))
+                {
+                    m_inventory.Add(m_currentPuzzle.adds_to_inventory);
+                    m_notificationManager.ShowNotification(m_currentPuzzle.adds_to_inventory);
+                }
+
+                // Queue the result text with newlines
+                m_textQueue.Enqueue("\n\n" + m_currentPuzzle.result);
+
+                // Handle room transition
+                if (!string.IsNullOrEmpty(m_currentPuzzle.next_room))
+                {
+                    if (m_gameRooms != null && m_gameRooms.ContainsKey(m_currentPuzzle.next_room))
+                    {
+                        m_currentRoom = m_gameRooms[m_currentPuzzle.next_room];
+                        DisplayCurrentRoom(); // This will queue the new room description with newlines
+                    }
+                }
+
+                m_currentPuzzle = null;
+                LastChoiceWasValid = true;
+            }
+            else
+            {
+                Debug.LogError("That's not the correct solution.");
+            }
             return;
         }
 
@@ -271,25 +332,34 @@ public class GameStateManager : MonoBehaviour
             Debug.LogError("You can't do that yet. Something else must be done first.");
             return;
         }
-
+        
         // Check if the choice has requirements
-        if (!string.IsNullOrEmpty(matchedChoice.requires_item))
+        if (!string.IsNullOrEmpty(matchedChoice.requires_item) && !m_inventory.Contains(matchedChoice.requires_item))
         {
-            // TODO: Implement requirement checking system
-            Debug.Log($"Required item: {matchedChoice.requires_item}");
+            Debug.LogError($"You need {matchedChoice.requires_item} to do that.");
+            return;
+        }
+
+        // If this choice has a puzzle, set it as current puzzle
+        if (matchedChoice.puzzle != null)
+        {
+            m_currentPuzzle = matchedChoice;
+            m_textQueue.Enqueue("\n\n" + matchedChoice.result);
+            LastChoiceWasValid = true;
+            return;
         }
 
         // Add this choice to completed choices
         m_completedChoices.Add(matchedChoice.id);
 
-        // Add items to inventory
+        // Add items to inventory only if no puzzle
         if (!string.IsNullOrEmpty(matchedChoice.adds_to_inventory))
         {
             m_inventory.Add(matchedChoice.adds_to_inventory);
             m_notificationManager.ShowNotification(matchedChoice.adds_to_inventory);
         }
 
-        // Queue the result text
+        // Queue the result text with newlines
         m_textQueue.Enqueue("\n\n" + matchedChoice.result);
 
         // Handle room transition
@@ -298,7 +368,7 @@ public class GameStateManager : MonoBehaviour
             if (m_gameRooms != null && m_gameRooms.ContainsKey(matchedChoice.next_room))
             {
                 m_currentRoom = m_gameRooms[matchedChoice.next_room];
-                DisplayCurrentRoom(); // This will queue the new room description
+                DisplayCurrentRoom(); // This will queue the new room description with newlines
             }
             else
             {
@@ -307,15 +377,7 @@ public class GameStateManager : MonoBehaviour
         }
         else if (!m_isTyping)
         {
-            // If no room transition and not currently typing, start processing the queue
             StartNextText(matchedChoice);
-        }
-
-        // Check if this choice reveals a title
-        if (!string.IsNullOrEmpty(matchedChoice.reveals_title))
-        {
-            //m_currentRoom.title = matchedChoice.reveals_title;
-            //m_titleFader.FadeIn(matchedChoice.reveals_title, m_titleText, 8f);
         }
 
         LastChoiceWasValid = true;
