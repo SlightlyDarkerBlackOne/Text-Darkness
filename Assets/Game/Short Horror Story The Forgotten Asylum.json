@@ -324,9 +324,10 @@
           "result": "It requires a four-digit code.",
           "puzzle": {
             "type": "number_code",
-            "correct_code": "4732"
-          },
-          "adds_to_inventory": "exit_key"
+            "correct_code": "4732",
+            "result": "The cabinet opens, revealing a key.",
+            "adds_to_inventory": "exit_key"
+          }
         },
         "leave_room": {
           "id": "leave_room",

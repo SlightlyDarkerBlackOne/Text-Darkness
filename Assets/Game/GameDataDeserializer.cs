@@ -62,7 +62,16 @@ public class GameDataDeserializer
                     if (choiceData["ending"] != null)
                         newChoice.ending = choiceData["ending"].ToString();
                     if (choiceData["puzzle"] != null)
-                        newChoice.puzzle = choiceData["puzzle"];
+                    {
+                        JObject puzzleData = (JObject)choiceData["puzzle"];
+                        newChoice.puzzle = new Puzzle
+                        {
+                            type = puzzleData["type"].ToString(),
+                            correct_code = puzzleData["correct_code"]?.ToString(),
+                            result = puzzleData["result"]?.ToString(),
+                            adds_to_inventory = puzzleData["adds_to_inventory"]?.ToString()
+                        };
+                    }
                     if (choiceData["reveals_title"] != null)
                         newChoice.reveals_title = choiceData["reveals_title"].ToString();
 
