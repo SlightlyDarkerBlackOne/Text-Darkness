@@ -12,7 +12,7 @@ public class Choice
     public string id;
     public string[] text_variations;
     public string text;
-    public string result;
+    public string[] result;
     public string requires_item;
     public string[] requires_choices;
     public string next_room;
@@ -37,7 +37,7 @@ public class Puzzle
 public class RoomData
 {
     public string title;
-    public string description;
+    public string[] description;
     public Dictionary<string, Choice> choices;
 }
 
@@ -51,8 +51,8 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private NotificationManager m_notificationManager;
     [SerializeField] private bool m_allowTextInput = true;
     [SerializeField] private float m_typingSpeed = 0.05f;
+    [SerializeField] private float m_delayBetweenRows = 0.5f;
     [SerializeField] private TextFader m_titleFader;
-
     private Dictionary<string, RoomData> m_gameRooms;
     private RoomData m_currentRoom;
     private Coroutine m_typingCoroutine;
@@ -142,11 +142,18 @@ public class GameStateManager : MonoBehaviour
         // Queue the room description with newlines if not first room
         if (!m_isFirstRoom)
         {
-            m_textQueue.Enqueue("\n\n\n" + m_currentRoom.description);
+            m_textQueue.Enqueue("\n\n\n");
+            foreach (var result in m_currentRoom.description)
+            {
+                m_textQueue.Enqueue("\n" + result);
+            }
         }
         else
         {
-            m_textQueue.Enqueue(m_currentRoom.description);
+            foreach (var result in m_currentRoom.description)
+            {
+                m_textQueue.Enqueue("\n" + result);
+            }
             m_isFirstRoom = false;
         }
         
@@ -202,11 +209,6 @@ public class GameStateManager : MonoBehaviour
         m_isTyping = true;
         m_allowTextInput = false;
         m_currentTypingText = _text;
-
-        if (m_mainText.text.Length > 500)
-        {
-            //m_mainText.text = "";
-        }
         
         int currentIndex = 0;
         string typedSoFar = "";
@@ -227,6 +229,8 @@ public class GameStateManager : MonoBehaviour
         m_typingCoroutine = null;
         m_allowTextInput = true;
         m_isTyping = false;
+
+        yield return new WaitForSeconds(m_delayBetweenRows);
 
         // Process next text in queue if any
         StartNextText();
@@ -332,7 +336,7 @@ public class GameStateManager : MonoBehaviour
         }
 
         // Queue the initial result text immediately
-        m_textQueue.Enqueue("\n\n" + matchedChoice.result);
+        m_textQueue.Enqueue("\n\n" + string.Join("\n", matchedChoice.result));
 
         
 

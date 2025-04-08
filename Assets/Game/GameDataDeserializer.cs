@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 public class GameDataDeserializer
 {
@@ -21,9 +21,19 @@ public class GameDataDeserializer
                 
                 var newRoom = new RoomData
                 {
-                    description = roomData["description"].ToString(),
                     choices = new Dictionary<string, Choice>()
                 };
+
+                // Parse room description as array
+                if (roomData["description"] is JArray descriptionArray)
+                {
+                    newRoom.description = descriptionArray.Select(x => x.ToString()).ToArray();
+                }
+                else if (roomData["description"] != null)
+                {
+                    // Handle legacy format where description is a single string
+                    newRoom.description = new string[] { roomData["description"].ToString() };
+                }
 
                 // Parse room title if available
                 if (roomData["title"] != null)
@@ -40,9 +50,19 @@ public class GameDataDeserializer
                     var newChoice = new Choice
                     {
                         id = choiceData["id"]?.ToString() ?? choiceKey, // Use key as id if not specified
-                        text = choiceData["text"].ToString(),
-                        result = choiceData["result"].ToString()
+                        text = choiceData["text"].ToString()
                     };
+
+                    // Parse result as array
+                    if (choiceData["result"] is JArray resultArray)
+                    {
+                        newChoice.result = resultArray.Select(x => x.ToString()).ToArray();
+                    }
+                    else if (choiceData["result"] != null)
+                    {
+                        // Handle legacy format where result is a single string
+                        newChoice.result = new string[] { choiceData["result"].ToString() };
+                    }
 
                     // Parse optional fields
                     if (choiceData["text_variations"] != null)

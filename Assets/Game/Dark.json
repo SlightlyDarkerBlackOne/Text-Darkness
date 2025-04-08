@@ -1,0 +1,147 @@
+{
+    "rooms": {
+      "dark_room": {
+        "description": [
+          "Ugh…",
+          "Uhh…",
+          "Ow, pain…",
+          "Pain… Everywhere.",
+          "My whole body aches like I spent the last night drinking and then getting my ass kicked, ouch.",
+          "What the hell happened, anyway? It’s so hard to think.",
+          "And why am I so uncomfortable?",
+          "Wait, I know this feeling…",
+          "I’m sleeping on the floor, aren’t I?",
+          "It’s so dark, I can’t see a thing. Must have killed the lights when I got back.",
+          "This hasn’t happened in a while…",
+          "No, not thinking about that now.",
+          "My head is killing me, I just want to go back to sleep.",
+          "But this floor is cold. No, it’s wet!",
+          "Don’t tell me I pissed myself in sleep…",
+          "*sniff* Hmm, it doesn’t smell like piss, doesn’t smell like anything really.",
+          "Water? Was it raining?",
+          "*sigh* Fuck.",
+          "I need to get up.",
+          "At least transport this wreck of a body to bed."
+        ],
+        "choices": {
+          "try_to_get_up": {
+            "id": "try_to_get_up",
+            "text_variations": [
+              "get up", "stand up", "try to get up", "rise", "move", "stand", "push yourself up"
+            ],
+            "text": "Try to get up.",
+            "result": [
+              "Let’s go body. One, two… Ugh! Three. I feel old.",
+              "Woah, and dizzy, apparently.",
+              "Unwillingly, you push yourself off the floor with a grunt. Even though the body feels heavy and weak, almost drugged, you force your legs to cooperate and, with buckling knees, still manage to stand up straight.",
+              "<panting> “That… Was… Difficult…"
+            ]
+          },
+          "just_lay_there": {
+            "id": "just_lay_there",
+            "text_variations": [
+              "lay there", "stay", "rest", "wait", "just lay", "sleep more"
+            ],
+            "text": "Just lay there a little longer.",
+            "result": [
+              "I could just close my eyes again… maybe sleep it off.",
+              "But I know the pain won’t go away. Not like this."
+            ]
+          },
+          "sniff_again": {
+            "id": "sniff_again",
+            "text_variations": [
+              "sniff again", "smell", "sniff", "smell around", "take a sniff"
+            ],
+            "text": "Sniff again, just in case.",
+            "result": [
+              "*sniff* Still no piss… that’s good, I guess?",
+              "It just smells… damp. Like mold. Old rain. Basement vibes."
+            ]
+          },
+          "feel_around": {
+            "id": "feel_around",
+            "text_variations": [
+              "feel around", "touch floor", "search by hand", "feel the ground", "touch around"
+            ],
+            "text": "Feel around with your hand.",
+            "result": [
+              "My fingers brush cold tiles, cracked and grimy.",
+              "There’s a small sharp edge—maybe a broken bottle? Great.",
+              "And… something soft? Ew, what *was* that?"
+            ]
+          },
+          "open_eyes": {
+            "id": "open_eyes",
+            "text_variations": [
+              "open eyes", "see", "look", "open your eyes", "try to see"
+            ],
+            "text": "Try to open your eyes.",
+            "result": [
+              "They’re open. I think. But it’s still pitch black.",
+              "No light leaks in. No shapes. Just void.",
+              "Guess the power’s out. Or maybe I’m blind now. Awesome."
+            ]
+          }
+          "look_around": {
+          "id": "look_around",
+          "text_variations": [
+            "look around",
+            "explore area",
+            "see vicinity",
+            "observe surroundings",
+            "check proximity",
+            "gaze area",
+            "take a look",
+            "near",
+            "nearby"
+          ],
+          "text": "Look around the room.",
+          "result": [
+            "My eyes are wide open, but all I see is darkness. I need to orient myself somehow.",
+            "I can’t see anything, it’s too dark. I’ll have to feel my way around.",
+            "It’s so dark, I might as well be blind. Luckily, I have other senses that work. Somewhat."
+          ]
+        },
+        "remember": {
+          "id": "remember",
+          "text_variations": [
+            "remember",
+            "reminisce",
+            "recall",
+            "recollect",
+            "call up"
+          ],
+          "text": "Try to remember.",
+          "result": [
+            "What should I remember?"
+          ]
+        },
+        "think": {
+          "id": "think",
+          "text_variations": [
+            "think"
+          ],
+          "text": "Think.",
+          "result": [
+            "What should I think about?"
+          ]
+        },
+        "yourself": {
+          "id": "yourself",
+          "text_variations": [
+            "yourself",
+            "you",
+            "me",
+            "myself"
+          ],
+          "text": "Think about yourself.",
+          "result": [
+            "I’m (PlayerName/CharName). No spouse, no lover nor anyone to come home to. If you don’t count Marvin, that is. Should be thirty, soon. Working as an engineer/muralist/soldier. Well, that’s what I was, before it all went to shit. Currently, generally and diligently, I’m working on achieving that sweet spot when your limbs go numb from enough drink and meds. When your thoughts melt into even sweeter oblivion."
+          ]
+        }
+        }
+      }
+    }
+  }
+  
