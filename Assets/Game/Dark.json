@@ -6,7 +6,15 @@
           "Uhh…",
           "Ow, pain…",
           "Pain… Everywhere.",
-          "My whole body aches like I spent the last night drinking and then getting my ass kicked, ouch.",
+          {
+            "text": "My whole body aches like I spent the last night drinking and then getting my ass kicked, ouch.",
+            "events": [
+              {
+                "type": "introduce_mechanic",
+                "mechanic": "health"
+              }
+            ]
+          },
           "What the hell happened, anyway? It’s so hard to think.",
           "And why am I so uncomfortable?",
           "Wait, I know this feeling…",
@@ -23,6 +31,7 @@
           "I need to get up.",
           "At least transport this wreck of a body to bed."
         ],
+        "introduce_mechanic": "health - ass kicked",
         "choices": {
           "try_to_get_up": {
             "id": "try_to_get_up",
@@ -69,77 +78,265 @@
               "My fingers brush cold tiles, cracked and grimy.",
               "There’s a small sharp edge—maybe a broken bottle? Great.",
               "And… something soft? Ew, what *was* that?"
+            ],
+            "unlocks": ["broken_bottle"]
+          },
+          "broken_bottle": {
+            "id": "broken_bottle",
+            "text_variations": [
+              "broken bottle", "bottle",
+              "look at broken bottle", "look at bottle",
+              "look at the broken bottle", "look at the bottle",
+              "is it a broken bottle", "is it a bottle",
+              "is it broken bottle"
+            ],
+            "text": "Look at the broken bottle.",
+            "result": [
+              "Maybe it is. Maybe it's not. I dont want to cut myself!"
+            ],
+            "requirements": "feel_around"
+          },
+          "light_switch": {
+            "id": "light_switch",
+            "text_variations": [
+              "light switch", "switch", "turn on light",
+              "find light switch", "find switch", "find the light switch",
+              "find a light switch"
+            ],
+            "text": "Find the light switch.",
+            "result": [
+              "You find the light switch. You flip it on and off a few times, but it doesn't work. No light. No power."
             ]
           },
           "open_eyes": {
             "id": "open_eyes",
             "text_variations": [
-              "open eyes", "see", "look", "open your eyes", "try to see"
+              "open eyes", "see", "open your eyes", "try to see",
+              "open my eyes"
             ],
             "text": "Try to open your eyes.",
             "result": [
               "They’re open. I think. But it’s still pitch black.",
               "No light leaks in. No shapes. Just void.",
-              "Guess the power’s out. Or maybe I’m blind now. Awesome."
+              "Guess the power’s out."
+            ]
+          },
+          "look_around": {
+            "id": "look_around",
+            "text_variations": [
+              "look around",
+              "look",
+              "explore area",
+              "see vicinity",
+              "observe surroundings",
+              "check proximity",
+              "gaze area",
+              "take a look",
+              "near",
+              "nearby",
+              "look around the room",
+              "look around the area",
+              "look around the vicinity",
+              "look around the surroundings",
+              "look around the proximity",
+              "look around the gaze"
+            ],
+            "text": "Look around the room.",
+            "result": [
+              "My eyes are wide open, but all I see is darkness. I need to orient myself somehow.",
+              "I can’t see anything, it’s too dark. I’ll have to feel my way around.",
+              "It’s so dark, I might as well be blind. Luckily, I have other senses that work. Somewhat."
+            ]
+          },
+          "remember": {
+            "id": "remember",
+            "text_variations": [
+              "remember",
+              "reminisce",
+              "recall",
+              "recollect",
+              "call up"
+            ],
+            "text": "Try to remember.",
+            "result": [
+              "What should I remember?"
+            ]
+          },
+          "go_to_bed": {
+            "id": "go_to_bed",
+            "text_variations": [
+              "go to bed", "go to the bed", "go on the bed", "go on bed", "sleep on bed", "sleep in bed", "sleep in the bed", "sleep on the bed"
+            ],
+            "text": "Go to bed.",
+            "result": [
+              "What do you mean, go to bed? Its so dark, I can't see a thing.",
+              "Maybe I should open my eyes first."
+            ] 
+          },
+          "think": {
+            "id": "think",
+            "text_variations": [
+              "think",
+              "think about",
+              "think hard",
+              "think hard about",
+              "think about the",
+              "think harder",
+              "think harder about"
+            ],
+            "text": "Think.",
+            "result": [
+              "What should I think about?"
+            ]
+          },
+          "yourself": {
+            "id": "yourself",
+            "text_variations": [
+              "yourself",
+              "you",
+              "me",
+              "myself",
+              "about yourself",
+              "about me",
+              "about me as a person",
+              "about me as a character",
+              "think about yourself",
+              "think about me",
+              "think about me as a person",
+              "think about me as a character"
+            ],
+            "text": "Think about yourself.",
+            "result": [
+              "I’m Frank. No spouse, no lover nor anyone to come home to. If you don’t count Marvin, that is. Should be thirty, soon. Working as an engineer/muralist/soldier. Well, that’s what I was, before it all went to shit. Currently, generally and diligently, I’m working on achieving that sweet spot when your limbs go numb from enough drink and meds. When your thoughts melt into even sweeter oblivion."
+            ]
+          },
+          "suicidal_thoughts": {
+            "id": "suicidal_thoughts",
+            "text_variations": [
+              "why don’t you kill yourself", "take your life", "just end it",
+              "kill yourself", "kill me", "kill me now", "kill me now now", "kill me now now now"
+            ],
+            "text": "Why don’t you kill yourself?",
+            "result": [
+              "Suicides go to hell? Hah, just kidding, I’m already living it.",
+              "No, someone wouldn’t want me to do that.",
+              "Who?",
+              "I don’t want to think about them right now."
+            ]
+          },
+          "birthday": {
+            "id": "birthday",
+            "text_variations": [
+              "when’s your birthday", "birthday", "date of birth"
+            ],
+            "text": "When’s your birthday?",
+            "result": [
+              "June 1st."
+            ]
+          },
+          "date": {
+            "id": "date",
+            "text_variations": [
+              "what is the date", "what's the date", "today's date"
+            ],
+            "text": "What is the date?",
+            "result": [
+              "Like, the 20th of May, or something.",
+              "Don’t know, don’t care. But if I had to guess… May 20th?"
+            ]
+          },
+          "who_is_marvin": {
+            "id": "who_is_marvin",
+            "text_variations": [
+              "who is marvin", "who's marvin"
+            ],
+            "text": "Who’s Marvin?",
+            "result": [
+              "SFX: cat meow/purring",
+              "Cat. Marvin’s my cat. A lazy tabby.",
+              "Marvin cuddles with me when I’m down. So, like, every day…"
+            ]
+          },
+          "call_marvin": {
+            "id": "call_marvin",
+            "text_variations": [
+              "call marvin"
+            ],
+            "text": "Call Marvin.",
+            "result": [
+              "Marvin, pst pst pst, Marvin. Bastard’s probably sleeping in the sink again."
+            ]
+          },
+          "why_down": {
+            "id": "why_down",
+            "text_variations": [
+              "why are you down", "why so sad", "why are you sad"
+            ],
+            "text": "Why are you down?",
+            "result": [
+              "It’s very simple. Because I don’t want to think about it right now.",
+              "Can we think of something else?"
+            ]
+          },
+          "marvin_more": {
+            "id": "marvin_more",
+            "text_variations": [
+              "tell me more about marvin", "what’s marvin like"
+            ],
+            "text": "Tell me more about Marvin.",
+            "requires": "who_is_marvin",
+            "result": [
+              "I don’t want to be that person who goes on a thirty minute monologue about how their cat’s special and smart and perrrfect.",
+              "But… Marvin is all that and more.",
+              "Probably the only reason I still haven’t cut my wrists in the bathtub."
+            ]
+          },
+          "why_alone": {
+            "id": "why_alone",
+            "text_variations": [
+              "why are you alone", "how come you're alone"
+            ],
+            "text": "Why are you alone?",
+            "result": [
+              "Because, people die.",
+              "Same, sad ol’ story."
+            ]
+          },
+          "lover": {
+            "id": "lover",
+            "text_variations": [
+              "did you have a lover", "have you loved"
+            ],
+            "text": "Did you have a lover?",
+            "result": [
+              "Yes, I had a lover.",
+              "She’s dead now."
+            ]
+          },
+          "how_did_she_die": {
+            "id": "how_did_she_die",
+            "text_variations": [
+              "how did she die", "what happened to her", "what killed her"
+            ],
+            "text": "How did she die?",
+            "result": [
+              "I don’t want to think about this right now.",
+              "It torments me every waking day, it doesn’t have to torment me every goddamn minute.",
+              "I just want to think about something else.",
+              "Can’t I just think of something else."
+            ]
+          },
+          "why_drink": {
+            "id": "why_drink",
+            "text_variations": [
+              "why do you drink so much", "why do you drink", "why are you drinking"
+            ],
+            "text": "Why do you drink so much?",
+            "result": [
+              "Because my life is too painful without something to numb it.",
+              "When you feel pain, don’t you just want to numb it?"
             ]
           }
-          "look_around": {
-          "id": "look_around",
-          "text_variations": [
-            "look around",
-            "explore area",
-            "see vicinity",
-            "observe surroundings",
-            "check proximity",
-            "gaze area",
-            "take a look",
-            "near",
-            "nearby"
-          ],
-          "text": "Look around the room.",
-          "result": [
-            "My eyes are wide open, but all I see is darkness. I need to orient myself somehow.",
-            "I can’t see anything, it’s too dark. I’ll have to feel my way around.",
-            "It’s so dark, I might as well be blind. Luckily, I have other senses that work. Somewhat."
-          ]
-        },
-        "remember": {
-          "id": "remember",
-          "text_variations": [
-            "remember",
-            "reminisce",
-            "recall",
-            "recollect",
-            "call up"
-          ],
-          "text": "Try to remember.",
-          "result": [
-            "What should I remember?"
-          ]
-        },
-        "think": {
-          "id": "think",
-          "text_variations": [
-            "think"
-          ],
-          "text": "Think.",
-          "result": [
-            "What should I think about?"
-          ]
-        },
-        "yourself": {
-          "id": "yourself",
-          "text_variations": [
-            "yourself",
-            "you",
-            "me",
-            "myself"
-          ],
-          "text": "Think about yourself.",
-          "result": [
-            "I’m (PlayerName/CharName). No spouse, no lover nor anyone to come home to. If you don’t count Marvin, that is. Should be thirty, soon. Working as an engineer/muralist/soldier. Well, that’s what I was, before it all went to shit. Currently, generally and diligently, I’m working on achieving that sweet spot when your limbs go numb from enough drink and meds. When your thoughts melt into even sweeter oblivion."
-          ]
-        }
         }
       }
     }

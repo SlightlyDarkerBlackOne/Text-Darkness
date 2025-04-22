@@ -39,6 +39,8 @@ public class RoomData
     public string title;
     public string[] description;
     public Dictionary<string, Choice> choices;
+    public bool hasHealthEvent;
+    public string healthEventText;
 }
 
 public class GameStateManager : MonoBehaviour
@@ -231,6 +233,12 @@ public class GameStateManager : MonoBehaviour
         m_isTyping = false;
 
         yield return new WaitForSeconds(m_delayBetweenRows);
+
+        // Check if this is the line with the health event
+        if (m_currentRoom.hasHealthEvent && _text.Contains(m_currentRoom.healthEventText))
+        {
+            TriggerEventHealth();
+        }
 
         // Process next text in queue if any
         StartNextText();
@@ -467,5 +475,11 @@ public class GameStateManager : MonoBehaviour
         {
             StartNextText();
         }
+    }
+
+    private void TriggerEventHealth()
+    {
+        // TODO: Implement health mechanic introduction
+        Debug.Log("Health mechanic introduced");
     }
 }

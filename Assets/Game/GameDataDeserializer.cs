@@ -27,7 +27,31 @@ public class GameDataDeserializer
                 // Parse room description as array
                 if (roomData["description"] is JArray descriptionArray)
                 {
-                    newRoom.description = descriptionArray.Select(x => x.ToString()).ToArray();
+                    var descriptionList = new List<string>();
+                    foreach (var item in descriptionArray)
+                    {
+                        if (item is JObject obj && obj["text"] != null)
+                        {
+                            descriptionList.Add(obj["text"].ToString());
+                            if (obj["events"] != null)
+                            {
+                                foreach (var evt in obj["events"])
+                                {
+                                    if (evt["type"]?.ToString() == "introduce_mechanic" && 
+                                        evt["mechanic"]?.ToString() == "health")
+                                    {
+                                        newRoom.hasHealthEvent = true;
+                                        newRoom.healthEventText = obj["text"].ToString();
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            descriptionList.Add(item.ToString());
+                        }
+                    }
+                    newRoom.description = descriptionList.ToArray();
                 }
                 else if (roomData["description"] != null)
                 {

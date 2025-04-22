@@ -1312,7 +1312,7 @@ MonoBehaviour:
   m_promptInputField: {fileID: 902656940}
   m_notificationManager: {fileID: 580899012}
   m_allowTextInput: 1
-  m_typingSpeed: 0.06
+  m_typingSpeed: 0.04
   m_delayBetweenRows: 0.5
   m_titleFader: {fileID: 1174601800}
 --- !u!114 &1174601800
