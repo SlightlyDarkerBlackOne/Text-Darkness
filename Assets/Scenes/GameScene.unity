@@ -1200,6 +1200,8 @@ GameObject:
   - component: {fileID: 1174601799}
   - component: {fileID: 1174601800}
   - component: {fileID: 1174601801}
+  - component: {fileID: 1174601803}
+  - component: {fileID: 1174601802}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1306,6 +1308,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_initialRoomJson: {fileID: 4900000, guid: 5f5c47eb611aebb4c85fea2dc9d299b5, type: 3}
+  m_roomManager: {fileID: 1174601803}
+  m_choiceManager: {fileID: 1174601802}
   m_titleText: {fileID: 1154749054}
   m_mainText: {fileID: 390539230}
   m_skipButton: {fileID: 2023473052}
@@ -1342,6 +1346,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_gameManager: {fileID: 1174601799}
   m_autoStart: 0
+--- !u!114 &1174601802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174601794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01e74373bd9b1e428939876f1feb0a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_promptInputField: {fileID: 902656940}
+  m_notificationManager: {fileID: 580899012}
+  m_roomManager: {fileID: 1174601803}
+--- !u!114 &1174601803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174601794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c868bf194eb444b9b1ad94b922b3b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_titleText: {fileID: 1154749054}
+  m_mainText: {fileID: 390539230}
+  m_titleFader: {fileID: 1174601800}
+  m_typingSpeed: 0.04
+  m_delayBetweenRows: 0.5
 --- !u!1 &1287508661
 GameObject:
   m_ObjectHideFlags: 0

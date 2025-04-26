@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.Assertions;
 
 public class StorySimulator : MonoBehaviour
 {
-    [SerializeField] private GameStateManager m_gameManager;
+    [SerializeField] private RoomManager m_roomManager;
+    [SerializeField] private ChoiceManager m_choiceManager;
     [SerializeField] private bool m_autoStart = false;
 
     private void Start()
@@ -26,7 +25,7 @@ public class StorySimulator : MonoBehaviour
     private IEnumerator SimulateMainPath()
     {
         yield return new WaitForSeconds(1f);
-        while (m_gameManager.IsTyping)
+        while (m_roomManager.IsTyping)
         {
             yield return null;
         }
@@ -34,32 +33,32 @@ public class StorySimulator : MonoBehaviour
 
         // Patient Room sequence
         yield return SimulateChoice("look bed");
-        Assert.IsTrue(m_gameManager.CurrentRoom.title == "Patient Room", "Title should be revealed after looking at bed");
+        Assert.IsTrue(m_roomManager.CurrentRoom.title == "Patient Room", "Title should be revealed after looking at bed");
         
         yield return SimulateChoice("read journal");
         yield return SimulateChoice("look mirror");
         yield return SimulateChoice("touch mirror");
-        Assert.IsTrue(m_gameManager.HasItem("journal"), "Journal should be in inventory");
+        Assert.IsTrue(m_choiceManager.HasItem("journal"), "Journal should be in inventory");
         
         yield return SimulateChoice("search bed");
-        Assert.IsTrue(m_gameManager.HasItem("scalpel"), "Scalpel should be in inventory");
+        Assert.IsTrue(m_choiceManager.HasItem("scalpel"), "Scalpel should be in inventory");
         
         yield return SimulateChoice("enter mirror");
 
         // Shadow Hallway sequence
-        Assert.IsTrue(m_gameManager.CurrentRoom.title == "Shadow Hallway", "Should be in Shadow Hallway");
+        Assert.IsTrue(m_roomManager.CurrentRoom.title == "Shadow Hallway", "Should be in Shadow Hallway");
         yield return SimulateChoice("run away");
         yield return SimulateChoice("follow whispers");
         yield return SimulateChoice("trace symbols");
 
         // Operating Room sequence
-        Assert.IsTrue(m_gameManager.CurrentRoom.title == "Operating Room", "Should be in Operating Room");
+        Assert.IsTrue(m_roomManager.CurrentRoom.title == "Operating Room", "Should be in Operating Room");
         yield return SimulateChoice("inspect tools");
         yield return SimulateChoice("cut restraints");
         yield return SimulateChoice("search cabinet");
         yield return SimulateChoice("4732");
 
-        Assert.IsTrue(m_gameManager.HasItem("exit_key"), "Exit key should be in inventory");
+        Assert.IsTrue(m_choiceManager.HasItem("exit_key"), "Exit key should be in inventory");
         yield return SimulateChoice("leave room");
 
         // Forgotten Exit sequence
@@ -74,7 +73,7 @@ public class StorySimulator : MonoBehaviour
 
         // Test bad ending
         yield return SimulateChoice("deny truth");
-        Assert.IsTrue(m_gameManager.IsInRoom("patient_room"), "Should return to Patient Room after denying truth");
+        Assert.IsTrue(m_roomManager.IsInRoom("patient_room"), "Should return to Patient Room after denying truth");
 
         Debug.Log("Story simulation completed successfully!");
     }
@@ -83,15 +82,15 @@ public class StorySimulator : MonoBehaviour
     {
         // Test invalid choices
         yield return SimulateChoice("invalid command");
-        Assert.IsFalse(m_gameManager.LastChoiceWasValid, "Invalid command should not be accepted");
+        Assert.IsFalse(m_choiceManager.LastChoiceWasValid, "Invalid command should not be accepted");
 
         // Test requirements
         yield return SimulateChoice("enter mirror");
-        Assert.IsFalse(m_gameManager.LastChoiceWasValid, "Should not be able to enter mirror without looking first");
+        Assert.IsFalse(m_choiceManager.LastChoiceWasValid, "Should not be able to enter mirror without looking first");
 
         // Test item requirements
         yield return SimulateChoice("cut restraints");
-        Assert.IsFalse(m_gameManager.LastChoiceWasValid, "Should not be able to cut restraints without scalpel");
+        Assert.IsFalse(m_choiceManager.LastChoiceWasValid, "Should not be able to cut restraints without scalpel");
 
         Debug.Log("Alternative paths tested successfully!");
     }
@@ -99,10 +98,10 @@ public class StorySimulator : MonoBehaviour
     private IEnumerator SimulateChoice(string choice)
     {
         Debug.Log($"Simulating choice: {choice}");
-        m_gameManager.ProcessChoice(choice);
+        m_choiceManager.ProcessChoice(choice);
         
         // Wait for typing to complete
-        while (m_gameManager.IsTyping)
+        while (m_roomManager.IsTyping)
         {
             yield return null;
         }
