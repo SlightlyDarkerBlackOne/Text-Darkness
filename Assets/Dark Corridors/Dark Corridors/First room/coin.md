@@ -1,0 +1,1 @@
+The coin is found in the trash in the third drawer of the cabinet. Player must "sift through trash" in order to find it, they can also just "empty the drawer" which will make a trash pile on the floor they can inspect later or just ignore
