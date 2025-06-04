@@ -6,6 +6,7 @@
       {
         "id": "d21e639ac1e0f6ac",
         "type": "tabs",
+        "dimension": 50.894988066825775,
         "children": [
           {
             "id": "476fbad1fda2a3b3",
@@ -13,12 +14,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Dark Corridors/First room/Wooden cabinet/Move wooden cabinet.md",
+                "file": "Dark Corridors/First room/Metal door/Take ceramic tile.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Move wooden cabinet"
+              "title": "Take ceramic tile"
             }
           }
         ]
@@ -26,37 +27,23 @@
       {
         "id": "2b432672389de0c4",
         "type": "tabs",
+        "dimension": 49.105011933174225,
         "children": [
           {
-            "id": "d0b48dde3c77048c",
+            "id": "98ede36541479deb",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Dark Corridors/First room/Wooden cabinet/Open wooden cabinet.md",
+                "file": "Use pipe on door dent.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Open wooden cabinet"
-            }
-          },
-          {
-            "id": "d9650684db1ea6fd",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Move wooden cabinet under water.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Move wooden cabinet under water"
+              "title": "Use pipe on door dent"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -201,35 +188,36 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d9650684db1ea6fd",
+  "active": "476fbad1fda2a3b3",
   "lastOpenFiles": [
-    "Dark Corridors/First room/Wooden cabinet/Move wooden cabinet.md",
-    "Move wooden cabinet under water.md",
-    "Jump at water source.md",
+    "Use pipe on door dent.md",
+    "Dark Corridors/First room/Metal door/Metal panel.md",
+    "Dark Corridors/First room/Metal door/Dent in door.md",
+    "Pull harder door dent.md",
+    "Dark Corridors/First room/Metal door/Pull at door dent.md",
+    "Leave door dent.md",
+    "Open metal door.md",
+    "Dark Corridors/First room/Metal door/Door bar.md",
+    "Dark Corridors/First room/Metal door/Take ceramic tile.md",
+    "Dark Corridors/First room/Metal door/Push arm through door dent.md",
+    "Dark Corridors/First room/Metal door",
     "Dark Corridors/First room/Pipe.md",
-    "Locate dripping water.md",
+    "Dark Corridors/First room/Wooden cabinet/Move wooden cabinet under water.md",
+    "Reach for pipe.md",
+    "Dark Corridors/First room/Wooden cabinet/Move wooden cabinet.md",
+    "Dark Corridors/First room/Wooden cabinet/Climb wooden cabinet.md",
+    "Dark Corridors/First room/Jump at water source.md",
+    "Dark Corridors/First room/Locate dripping water.md",
     "Dark Corridors/First room/Dripping water.md",
-    "Dark Corridors/First room/Wooden cabinet/Coin.md",
-    "Dark Corridors/First room/Draft.md",
-    "Dark Corridors/First room/Wooden cabinet/Second drawer.md",
-    "Military lighter.md",
-    "Dark Corridors/First room/Wooden cabinet/Debris.md",
-    "Dark Corridors/First room/Wooden cabinet/Break second drawer.md",
-    "Dark Corridors/First room/Find house keys.md",
+    "Dark Corridors/First room/Pockets/Folded piece of paper.md",
     "Dark Corridors/First room/Wooden cabinet/Third drawer.md",
-    "Dark Corridors/First room/Find pot.md",
-    "Dark Corridors/First room/Explore room 1.md",
-    "Fix roof.md",
-    "Dark Corridors/First room/Wooden cabinet/Open wooden cabinet.md",
-    "Dark Corridors/First room/Wooden cabinet/Wooden cabinet.md",
-    "Dark Corridors/First room/Wooden cabinet/First drawer.md",
-    "Dark Corridors/First room/First room.md",
-    "Dark Corridors/First room/Water on floor.md",
-    "Dark Corridors/First room/Listen room 1.md",
-    "Dark Corridors/First room/Wooden cabinet/Damp papers.md",
     "Dark Corridors/First room/Wooden cabinet/Trash.md",
+    "Dark Corridors/First room/Find pot.md",
+    "Dark Corridors/First room/Pockets/Right pocket.md",
+    "Dark Corridors/First room/Pockets/Left pocket.md",
+    "Dark Corridors/First room/Pockets/Empty pockets.md",
+    "Dark Corridors/First room/Pockets/Check pockets.md",
     "Dark Corridors/First room/Wooden cabinet",
-    "Permanent interactions/Zodiac sign/It's your birthday.md",
     "Dark Corridors/First room/Pockets",
     "Permanent interactions/Drinking problem",
     "Permanent interactions/Spouse",
@@ -237,7 +225,6 @@
     "Dark Corridors",
     "Permanent interactions/Kill yourself",
     "Permanent interactions/Is this hell",
-    "Permanent interactions/How do you feel",
-    "Permanent interactions/Are you alone"
+    "Permanent interactions/How do you feel"
   ]
 }
