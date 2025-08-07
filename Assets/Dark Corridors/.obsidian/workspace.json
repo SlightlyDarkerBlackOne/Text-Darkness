@@ -9,17 +9,17 @@
         "dimension": 50.894988066825775,
         "children": [
           {
-            "id": "476fbad1fda2a3b3",
+            "id": "e80cbf006012dd2f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Dark Corridors/First room/Metal door/Take ceramic tile.md",
+                "file": "Dark Corridors/First room/Frank/Give Marvin's name to Frank.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Take ceramic tile"
+              "title": "Give Marvin's name to Frank"
             }
           }
         ]
@@ -35,12 +35,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Use pipe on door dent.md",
+                "file": "Dark Corridors/First room/Frank/Let Frank go.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Use pipe on door dent"
+              "title": "Let Frank go"
             }
           }
         ]
@@ -188,43 +188,43 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "476fbad1fda2a3b3",
+  "active": "98ede36541479deb",
   "lastOpenFiles": [
-    "Use pipe on door dent.md",
-    "Dark Corridors/First room/Metal door/Metal panel.md",
-    "Dark Corridors/First room/Metal door/Dent in door.md",
-    "Pull harder door dent.md",
-    "Dark Corridors/First room/Metal door/Pull at door dent.md",
-    "Leave door dent.md",
-    "Open metal door.md",
-    "Dark Corridors/First room/Metal door/Door bar.md",
-    "Dark Corridors/First room/Metal door/Take ceramic tile.md",
-    "Dark Corridors/First room/Metal door/Push arm through door dent.md",
+    "Dark Corridors/First room/Frank/Give Marvin's name to Frank.md",
+    "Dark Corridors/First room/Frank/What is value Frank.md",
+    "Last thing you remember.md",
+    "Fix roof.md",
+    "Don't give coin to Frank.md",
+    "Bandage wound.md",
+    "Dark Corridors/First room/Frank/Ask about Frank.md",
+    "Remember/Think about.md",
+    "Remember/Remember, Think.md",
+    "Permanent interactions/Yourself.md",
+    "Permanent interactions/Permanent interactions.md",
+    "Permanent interactions/How you got here.md",
+    "Permanent interactions/Zodiac sign/Zodiac no.md",
+    "Permanent interactions/Zodiac sign/Zodiac yes.md",
+    "Permanent interactions/Zodiac sign/Your zodiac sign.md",
+    "Permanent interactions/Zodiac sign/When's your birthday.md",
+    "Permanent interactions/Zodiac sign/What date is it.md",
+    "Permanent interactions/Zodiac sign/It's your birthday.md",
+    "Permanent interactions/Spouse/What went to shit.md",
+    "Permanent interactions/Spouse/Spouse or Lover.md",
+    "Permanent interactions/Spouse/Spouse death.md",
+    "Permanent interactions/Spouse/Who is that someone 1.md",
+    "Permanent interactions/Kill yourself/Kill yourself 1.md",
+    "Permanent interactions/Is this hell/Scared of afterlife.md",
+    "Permanent interactions/Is this hell/Religious type.md",
+    "Permanent interactions/Is this hell/Not scared of afterlife.md",
+    "Dark Corridors/Hallway",
+    "Dark Corridors/First room/Frank",
+    "Dark Corridors/First room/Air duct cover",
+    "Dark Corridors/First room/General",
     "Dark Corridors/First room/Metal door",
-    "Dark Corridors/First room/Pipe.md",
-    "Dark Corridors/First room/Wooden cabinet/Move wooden cabinet under water.md",
-    "Reach for pipe.md",
-    "Dark Corridors/First room/Wooden cabinet/Move wooden cabinet.md",
-    "Dark Corridors/First room/Wooden cabinet/Climb wooden cabinet.md",
-    "Dark Corridors/First room/Jump at water source.md",
-    "Dark Corridors/First room/Locate dripping water.md",
-    "Dark Corridors/First room/Dripping water.md",
-    "Dark Corridors/First room/Pockets/Folded piece of paper.md",
-    "Dark Corridors/First room/Wooden cabinet/Third drawer.md",
-    "Dark Corridors/First room/Wooden cabinet/Trash.md",
-    "Dark Corridors/First room/Find pot.md",
-    "Dark Corridors/First room/Pockets/Right pocket.md",
-    "Dark Corridors/First room/Pockets/Left pocket.md",
-    "Dark Corridors/First room/Pockets/Empty pockets.md",
-    "Dark Corridors/First room/Pockets/Check pockets.md",
     "Dark Corridors/First room/Wooden cabinet",
     "Dark Corridors/First room/Pockets",
     "Permanent interactions/Drinking problem",
     "Permanent interactions/Spouse",
-    "Permanent interactions/Zodiac sign",
-    "Dark Corridors",
-    "Permanent interactions/Kill yourself",
-    "Permanent interactions/Is this hell",
-    "Permanent interactions/How do you feel"
+    "Permanent interactions/Zodiac sign"
   ]
 }

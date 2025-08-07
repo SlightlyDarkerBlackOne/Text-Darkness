@@ -4,6 +4,7 @@
 Are you alone?, Are you alone, Is anyone with you?, Is anyone with you,
 
 "result":
+
 ""You mean like, ==right now== or in ==general==?""
 
 [[Right now 1]]

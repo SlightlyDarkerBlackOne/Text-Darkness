@@ -5,7 +5,9 @@ Check pockets, Check pocket, Check your pockets, Inspect pockets, Inspect your p
 
 "result":
 **==SFX: ruffling pockets==**
-"“Let’s see… It’s always good to check your pockets after blacking out.” As you pat your **==pockets==** for any contents, you feel a ==small object== with smooth edges in the **==right pocket==**."
+"“Let’s see… It’s always good to check your pockets after blacking out.”"
+
+"As you pat your **==pockets==** for any contents, you feel a ==small object== with smooth edges in the **==right pocket==**."
 
 "requirements": get_up
 

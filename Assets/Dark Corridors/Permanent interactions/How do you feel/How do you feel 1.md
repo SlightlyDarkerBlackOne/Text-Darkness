@@ -9,3 +9,11 @@ How do you feel?, How do you feel, Are you feeling alright?, Are you feeling alr
 ""I woke up passed out on the ==floor== with a killer headache... What do you think?""
 
 "requirements": at_home
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+"result":
+
+""Umm, worse than before? I'm fucking lost and disoriented in this unfamiliar, lightless **==room==**. The headache hasn't stopped, either.""
+
+"requirements": not_at_home

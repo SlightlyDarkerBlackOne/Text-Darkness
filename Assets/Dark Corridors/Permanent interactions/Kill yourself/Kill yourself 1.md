@@ -6,6 +6,7 @@
 Kill yourself, Take your life, Take your own life, End your life, Commit suicide,
 
 "result":
+
 ""Suicides go to ==hell==? Hah, just kidding, I'm already living it. No, ==someone== wouldn't want me to do that.""
 
 [[Who is that someone 1]]
