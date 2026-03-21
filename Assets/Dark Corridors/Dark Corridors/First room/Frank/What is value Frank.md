@@ -1,17 +1,22 @@
-"id": what_is_value_frank
+---
+id: what_is_value_frank
+type: interaction
+scope: room_local
+room: first_room
+feature: frank
+aliases:
+  - What is value
+  - What do you mean by value
+  - Value?
+---
 
-"text_variations":
-What is value, What do you mean by value, Value?,
+What do you mean by "{{style:emphasis|value}}"?
 
-"result":
+Are you stupid? {{style:emphasis|Value}} is {{style:emphasis|value}}. Something I can use, something that has worth. Money, power, control, food for fucks sake.
 
-""What do you mean by "**==value==**"?""
+Any suggestions?
 
-"???: "Are you stupid? **==Value==** is **==value==**. Something I can use, something that has worth. Money, power, control, food for fucks sake.""
-
-""Any suggestions?""
-
-"???: "Huh, how about you give me your **==name==**.""
+Huh, how about you give me your {{style:emphasis|name}}.
 
 [[Give your name to Frank]]
 

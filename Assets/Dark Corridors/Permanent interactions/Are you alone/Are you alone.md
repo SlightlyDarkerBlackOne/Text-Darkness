@@ -1,16 +1,22 @@
-"id": are_you_alone
+---
+id: are_you_alone
+type: interaction
+scope: permanent
+feature: permanent_interactions_are_you_alone
+aliases:
+  - Are you alone?
+  - Are you alone
+  - Is anyone with you?
+  - Is anyone with you
+mutations:
+  - open_prompt:
+      id: are_you_alone_confirm
+      mode: exclusive_global
+      lock_other_choices: true
+---
 
-"text_variations":
-Are you alone?, Are you alone, Is anyone with you?, Is anyone with you,
-
-"result":
-
-""You mean like, ==right now== or in ==general==?""
+You mean like, {{style:emphasis|right now}} or in {{style:emphasis|general}}?
 
 [[Right now 1]]
-
-[[Right now 2]]
-
-[[Right now 3]]
 
 [[In general]]

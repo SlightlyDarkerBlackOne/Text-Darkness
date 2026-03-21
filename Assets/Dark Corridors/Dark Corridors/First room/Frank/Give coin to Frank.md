@@ -1,40 +1,63 @@
-"id": give_coin_to_frank
+---
+id: give_coin_to_frank
+type: interaction
+scope: room_local
+room: first_room
+feature: frank
+aliases:
+  - Give him coin
+  - Give coin
+  - Offer metal coin
+entry:
+  all:
+    - has_item: item_metal_coin
+    - completed: call_out_to_frank
+mutations:
+  - remove_item:
+      item: item_metal_coin
+      trigger: on_reveal
+      token: item_metal_coin
+---
 
-"text_variations":
-Give him coin, Give coin, Offer metal coin, 
+You stretch your hand through the {{style:emphasis|door's crack}} and offer the {{style:emphasis|coin}} to the stranger. As the person reaches to pick up the {{style:emphasis|coin}} resting on your open palm, they brush their fingers across it. You immediately notice them being worn out - cracked nails and arid skin. The person snatches the the {{item:item_metal_coin|style=emphasis|coin}} with intent. No, not intent. Something more akin to greed and desperation.
 
-"result":
+@say stranger
+Ha-haha-HA! I never thought I'd get one as easily as this.
 
-"You stretch your hand through the **==door's crack==** and offer the **==coin==** to the stranger. As the person reaches to pick up the **==coin==** resting on your open palm, they brush their fingers across it. You immediately notice them being worn out - cracked nails and arid skin. The person snatches the the **==coin==** with intent. No, not intent. Something more akin to greed and desperation."
+@say player
+So it's worth a lot?
 
-"???: "Ha-haha-HA! I never thought I’d get one as easily as this.""
+@say stranger
+Oh, it's worth much more than that.
 
-"“So it’s worth a lot?”"
+@cue sfx: steps_walking_away
 
-"???: "Oh, it’s worth much more than that.""
+@say player
+Hey, where are you going? Let me out first!
 
-**==SFX: steps walking away==**
+@say stranger
+Why should I? You're useless to me now.
 
-"“Hey, where are you going? Let me out first!”"
+@say player
+WHAT?! You said we had a deal!
 
-"???: "Why should I? You’re useless to me now.""
+@say stranger
+And you trust a stranger in the dark without ever seeing their face? Don't worry, I'll make more use of it than you ever could.
 
-""WHAT?! You said we had a deal!”"
+@say player
+No! NO! Come back! Please! I...
 
-"???": "And you trust a stranger in the dark without ever seeing their face? Don't worry, I’ll make more use of it than you ever could.""
+@say player
+I'll help you! It's easier if there's two of us, right?
 
-"“No! NO! Come back! Please! I…”"
+@say stranger
+You're not worth anything. I don't need a gullible mouth to feed. Just stay there and die quietly. It's for the best.
 
-"“I’ll help you! It’s easier if there’s two of us, right?”"
+@cue sfx: banging_on_door
 
-"???: "You’re not worth anything. I don’t need a gullible mouth to feed. Just stay there and die quietly. It's for the best.""
+@say player
+You son of a bitch! FUCK YOU! I'll rip you apart when I find you!
 
-**==SFX: banging on door==**
+Ignoring your threats, the person leaves. You can hear their footsteps getting further and further away.
 
-""You son of a bitch! FUCK YOU! I’ll rip you apart when I find you!""
-
-"Ignoring your threats, the person leaves. You can hear their footsteps getting further and further away."
-
-""I swear to fucking Christ, when I get out of here I'll break all of his wrinkly, evil, fucking fingers...""
-
-"requirements": item_metal_coin and call_out_to_frank
+I swear to fucking Christ, when I get out of here I'll break all of his wrinkly, evil, fucking fingers…

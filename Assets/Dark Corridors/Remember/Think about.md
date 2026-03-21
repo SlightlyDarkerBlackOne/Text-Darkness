@@ -1,7 +1,10 @@
-"id": think_about
+---
+id: think_about
+type: interaction
+scope: permanent
+feature: remember
+aliases:
+  - Think
+---
 
-"text_variations":
-Think
-
-"result":
-""Think about what?""
+Think about what?

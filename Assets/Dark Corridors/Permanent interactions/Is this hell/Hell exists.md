@@ -1,10 +1,22 @@
-"id": hell_exists
+---
+id: hell_exists
+type: interaction
+scope: permanent
+feature: is_this_hell
+prompt:
+  id: metaphoric_hell_confirm
+  role: yes
+aliases:
+  - It exists
+  - It does
+  - It does exist
+  - Hell exists
+  - Hell is real
+  - Hell does exist
+entry:
+  all:
+    - completed: metaphoric_hell
+    - prompt_active: metaphoric_hell_confirm
+---
 
-"text_variations":
-It exists, It does, It does exist, Hell exists, Hell is real, Hell does exist
-
-"result":
-
-""Sure, if you say so.""
-
-"requirements": metaphoric_hell
+Sure, if you say so.

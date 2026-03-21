@@ -92,6 +92,7 @@ Podrzani top-level fieldovi:
 - `priority`
 - `cooldown`
 - `once`
+- `prompt`
 - `mutations`
 - `links`
 - `timers`
@@ -238,6 +239,7 @@ Podrzani leaf condition tipovi:
 - `missing_item`
 - `flag`
 - `keyword_seen`
+- `prompt_active`
 - `room_is`
 - `scope_active`
 - `timer_active`
@@ -275,6 +277,13 @@ entry:
         equals: dehydrated_start
     - not:
         completed: how_you_got_here_sobered
+```
+
+```yaml
+entry:
+  all:
+    - completed: pull_at_door_dent
+    - prompt_active: pull_at_door_dent_confirm
 ```
 
 ### `visibility`
@@ -318,6 +327,34 @@ Ako je `true`, node se moze izvrsiti samo jednom.
 once: true
 ```
 
+### `prompt`
+
+`prompt` oznacava da je node odgovor unutar privremenog prompt konteksta, npr. modalni `yes/no` izbor.
+
+Primjer:
+
+```yaml
+prompt:
+  id: pull_at_door_dent_confirm
+  role: no
+```
+
+Podrzani fieldovi:
+
+- `id`
+- `role`
+
+Tipicni `role` primjeri:
+
+- `yes`
+- `no`
+- custom vrijednosti poput `left`, `right`, `accept`, `refuse`, `literal`, `metaphoric`
+
+`open_prompt.mode` preporucene vrijednosti:
+
+- `exclusive_global` za prompt koji privremeno zakljuca sve ostale choiceve
+- `local` za prompt koji otvara follow-up opcije bez globalnog blocka
+
 ### `mutations`
 
 Ovo je lista efekata koji se izvrse kad se node odigra.
@@ -337,6 +374,7 @@ Podrzani effect tipovi:
 - `play_vfx`
 - `start_timer`
 - `stop_timer`
+- `open_prompt`
 - `transition_room`
 - `introduce_mechanic`
 - `add_status`
@@ -357,11 +395,64 @@ mutations:
   - play_sfx: lighter_fail_wet
 ```
 
+Uklanjanje itema iz inventoryja na tocnom trenutku reveal-a:
+
+```yaml
+mutations:
+  - remove_item:
+      item: item_metal_coin
+      trigger: on_reveal
+      token: item_metal_coin
+```
+
+Stat mutation vezan uz odredeni inline token:
+
+```yaml
+mutations:
+  - sanity:
+      amount: 15
+      trigger: on_reveal
+      token: sanity
+```
+
+Stat mutation koji postavlja apsolutnu ciljnu vrijednost:
+
+```yaml
+mutations:
+  - sanity:
+      value: 20
+      trigger: on_reveal
+      token: sanity_drop
+  - sanity:
+      value: 70
+      trigger: on_reveal
+      token: sanity_recover
+```
+
 ```yaml
 mutations:
   - set_flag:
       name: frank_state
       value: hostile
+```
+
+Otvaranje ekskluzivnog prompta:
+
+```yaml
+mutations:
+  - open_prompt:
+      id: pull_at_door_dent_confirm
+      mode: exclusive_global
+      lock_other_choices: true
+```
+
+Otvaranje lokalnog prompta koji ne blokira sve ostale choiceve:
+
+```yaml
+mutations:
+  - open_prompt:
+      id: zodiac_sign_confirm
+      mode: local
 ```
 
 ### `links`
@@ -437,6 +528,7 @@ Body se sastoji od blockova.
 Podrzani block tipovi:
 
 - plain paragraph
+- dialogue block
 - cue block
 - choice hint block
 - variant block
@@ -450,6 +542,41 @@ Primjer:
 ```md
 Cat. {{keyword:marvin|Marvin}}'s my cat. A lazy tabby.
 {{keyword:marvin|Marvin}} cuddles with me when I'm down. So, like, every day...
+```
+
+## Dialogue block
+
+Za dijalog koristi se `@say` block sa speaker id-em.
+
+Sintaksa:
+
+```md
+@say player
+So it's worth a lot?
+
+@say stranger
+Oh, it's worth much more than that.
+```
+
+Pravila:
+
+- speaker id je obavezan
+- speaker id treba biti stabilan i u `snake_case` ili jednostavnom lowercase obliku
+- renderer moze mapirati speaker id na boju, portrait, voice ili drugi presentation layer
+- ako govornik nije poznat, koristi privremeni id poput `stranger`, `unknown_voice`, `creature`
+
+Primjer s naracijom izmedu linija:
+
+```md
+@say stranger
+Ha-haha-HA! I never thought I'd get one as easily as this.
+
+@say player
+So it's worth a lot?
+
+@cue sfx: steps_walking_away
+
+Ignoring your threats, the person leaves.
 ```
 
 ## Cue block
@@ -547,6 +674,12 @@ Item mention:
 {{item:military_lighter|military lighter}}
 ```
 
+Item s emphasisom, prikazana rijec (on-screen word) kao zadnji segment nakon `|`:
+
+```text
+{{item:item_rusty_metal_door_shard|style=emphasis|door}}
+```
+
 Style-only:
 
 ```text
@@ -565,11 +698,32 @@ SFX trigger na odredenu rijec:
 {{sfx:cat_meow|Marvin|trigger=on_reveal}}
 ```
 
+Item token koji oznacava trenutak kad item izlazi iz inventoryja:
+
+```text
+{{item:item_metal_coin|style=emphasis|coin}}
+```
+
+Status token koji oznacava tocan trenutak kad se mutation okida:
+
+```text
+{{status:sanity|style=emphasis|control}}
+```
+
+Reference token za runtime-injected vrijednosti poput imena igraca:
+
+```text
+{{ref:player_name|PlayerName}}
+```
+
 ### Pravila za tokene
 
 - `type` i `id` su obavezni
 - `display text` je obavezan
+- kad postoje dodatni dijelovi odvojeni s `|`, prikazana rijec moze biti zadnji segment (npr. `{{item:...|style=emphasis|door}}`) da je eksplicitno sto se ispisuje u tekstu
 - attributes su opcionalni
+- `id` tokena moze sluziti kao anchor za mutation trigger, npr. `token: sanity` + `trigger: on_reveal`
+- `ref` token sluzi za runtime reference; engine treba pokusati resolveati vrijednost po `id`, a ako ne uspije koristiti `display text` kao fallback
 - token ne smije biti multiline
 - parser mora fallbackati na plain text ako token nije validan, ali validation mora prijaviti gresku
 
@@ -684,6 +838,28 @@ mutations:
 ```yaml
 mutations:
   - transition_room: hallway
+```
+
+Primjer kad se room promijeni odmah, a content target novog rooma jos nije implementiran:
+
+```md
+---
+id: air_duct_left_confirmed
+type: interaction
+scope: room_local
+room: first_room
+feature: air_duct_cover
+aliases:
+  - Keep going
+entry:
+  completed: air_duct_left
+mutations:
+  - transition_room: lower_room
+---
+
+It doesn't. The segment you're on collapses. Screaming, you tumble further down into the darkness.
+
+[[Lower room]]
 ```
 
 ### Multiple effects
@@ -982,6 +1158,208 @@ You take the sharp {{item:wooden_stake|wooden stake}} and begin to stab him in
 the {{style:emphasis|leg}} repeatedly.
 ```
 
+## Example 4: Prompt-based yes/no choice
+
+Trigger node:
+
+```md
+---
+id: pull_at_door_dent
+type: interaction
+scope: room_local
+room: first_room
+feature: metal_door
+aliases:
+  - Pull at door dent
+entry:
+  completed: inspect_dent_in_door
+mutations:
+  - open_prompt:
+      id: pull_at_door_dent_confirm
+      mode: exclusive_global
+      lock_other_choices: true
+---
+
+It seems to be moving, but I'll really have to strain myself to pry it open.
+Should I pull harder?
+
+[[Pull harder door dent]]
+[[Leave door dent]]
+```
+
+No response:
+
+```md
+---
+id: leave_door_dent
+type: interaction
+scope: room_local
+room: first_room
+feature: metal_door
+prompt:
+  id: pull_at_door_dent_confirm
+  role: no
+aliases:
+  - "No"
+entry:
+  all:
+    - completed: pull_at_door_dent
+    - prompt_active: pull_at_door_dent_confirm
+---
+
+You let go of the door.
+```
+
+Yes response:
+
+```md
+---
+id: pull_harder_door_dent
+type: interaction
+scope: room_local
+room: first_room
+feature: metal_door
+prompt:
+  id: pull_at_door_dent_confirm
+  role: yes
+aliases:
+  - "Yes"
+entry:
+  all:
+    - completed: pull_at_door_dent
+    - prompt_active: pull_at_door_dent_confirm
+---
+
+You pull harder.
+```
+
+Drugi primjer za binary follow-up prompt:
+
+```md
+---
+id: metaphoric_hell
+type: interaction
+scope: permanent
+feature: is_this_hell
+entry:
+  completed: is_this_hell_1
+mutations:
+  - open_prompt:
+      id: metaphoric_hell_confirm
+      mode: exclusive_global
+      lock_other_choices: true
+---
+
+Most definitely. I doubt hell exists.
+
+[[Hell exists]]
+[[Hell doesn't exist]]
+```
+
+Prompt moze otvoriti dodatni prompt:
+
+```md
+---
+id: is_this_hell_1
+type: interaction
+scope: permanent
+feature: is_this_hell
+mutations:
+  - open_prompt:
+      id: is_this_hell_1_confirm
+      mode: exclusive_global
+      lock_other_choices: true
+---
+
+Depends how you view it. Like literal or metaphoric hell?
+
+[[Literal Hell]]
+[[Metaphoric hell]]
+```
+
+```md
+---
+id: metaphoric_hell
+type: interaction
+scope: permanent
+feature: is_this_hell
+prompt:
+  id: is_this_hell_1_confirm
+  role: metaphoric
+entry:
+  all:
+    - completed: is_this_hell_1
+    - prompt_active: is_this_hell_1_confirm
+mutations:
+  - open_prompt:
+      id: metaphoric_hell_confirm
+      mode: exclusive_global
+      lock_other_choices: true
+---
+
+Most definitely. I doubt hell exists.
+
+[[Hell exists]]
+[[Hell doesn't exist]]
+```
+
+Ovo znaci da response node iz prvog prompta moze odmah otvoriti novi, ugnijezdeni follow-up prompt.
+
+Primjer lokalnog prompta bez globalnog blocka:
+
+```md
+---
+id: zodiac_sign
+type: interaction
+scope: permanent
+feature: zodiac_sign
+mutations:
+  - open_prompt:
+      id: zodiac_sign_confirm
+      mode: local
+---
+
+Who gives a shit? Gemini.
+
+[[Zodiac no]]
+[[Zodiac yes]]
+```
+
+Prompt response moze i dalje imati vlastite `@variant` grane:
+
+```md
+---
+id: right_now_1
+type: interaction
+scope: permanent
+feature: permanent_interactions_are_you_alone
+prompt:
+  id: are_you_alone_confirm
+  role: right_now
+entry:
+  all:
+    - completed: are_you_alone
+    - prompt_active: are_you_alone_confirm
+---
+
+@variant encountered_people
+@entry:
+  any:
+    - completed: meet_frank
+    - completed: meet_bellen
+Right now, yes. But it seems there are more people here.
+
+@variant at_home
+@entry:
+  completed: at_home
+No one's here. Unless you count {{style:emphasis|Marvin}} sneaking somewhere about.
+
+@variant default
+@entry:
+  completed: not_at_home
+Seems like it. I don't think there's anyone around.
+```
+
 ## Validation rules
 
 Importer mora prijaviti gresku ako:
@@ -1037,3 +1415,11 @@ To je dovoljno da:
 - dobijes cist import u graph model
 
 Bez toga da writerima odmah uvedes pretezak format.
+
+## Recommendations
+
+- koristi `transition_room` za stvarnu gameplay/state promjenu sobe
+- koristi `[[Room Name]]` ili drugi content link za narrative target kad postoji ili ce postojati poseban node
+- ako room state treba promijeniti odmah, `transition_room` ne treba cekati da ciljni node vec postoji
+- ako i `transition_room` i `[[...]]` postoje zajedno, tretiraj ih kao dva odvojena sloja: state change i content continuation
+- za buduce room entry nodeove preporuka je da `room id` i buduci target node budu imenovani sto konzistentnije, npr. `lower_room`

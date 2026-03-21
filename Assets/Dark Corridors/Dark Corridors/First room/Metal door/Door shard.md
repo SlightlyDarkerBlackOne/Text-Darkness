@@ -1,9 +1,19 @@
-"id": item_metal_door_shard
+---
+id: item_metal_door_shard
+type: interaction
+scope: room_local
+room: first_room
+feature: metal_door
+aliases:
+  - Pick up metal shard
+  - Pick up metal door shard
+  - Take door shard
+entry:
+  any:
+    - completed: pull_harder_door_dent
+    - completed: pipe_on_door_dent
+mutations:
+  - grant_item: item_rusty_metal_door_shard
+---
 
-"text_variations":
-Pick up metal shard, Pick up metal door shard, Take door shard, 
-
-"result":
-"You pick up the piece of the **==door==** which you broke off. It's rusty, sharp and a bit bent."
-
-"requirements": pull_harder_door_dent or pipe_on_door_dent
+You pick up the piece of the {{item:item_rusty_metal_door_shard|style=emphasis|door}} which you broke off. It's rusty, sharp and a bit bent.

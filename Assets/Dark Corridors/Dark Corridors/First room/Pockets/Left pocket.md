@@ -1,18 +1,25 @@
-"id": left_pocket
+---
+id: left_pocket
+type: interaction
+scope: room_local
+room: first_room
+feature: pockets
+aliases:
+  - Check left pocket
+  - Empty left pocket
+  - Inspect left pocket
+entry:
+  completed: get_up
+---
 
-"text_variations":
-Check left pocket, Empty left pocket, Inspect left pocket
+@variant already_checked
+@entry:
+  any:
+    - completed: left_pocket
+    - completed: empty_pockets
 
-"result":
+I already did that. There's nothing there.
 
-"It's empty."
+@variant default
 
-"requirements": get_up
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-"result":
-
-""I already did that. There's nothing there.""
-
-"requirements": left_pocket or empty_pockets 
+It's empty.

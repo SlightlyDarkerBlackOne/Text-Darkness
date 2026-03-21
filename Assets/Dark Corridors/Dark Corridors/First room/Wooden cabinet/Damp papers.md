@@ -1,12 +1,24 @@
-"id": damp_papers
+---
+id: damp_papers
+type: interaction
+scope: room_local
+room: first_room
+feature: wooden_cabinet
+aliases:
+  - Take out damp papers
+  - Take damp papers
+  - Pick up damp papers
+  - Inspect damp papers
+  - Explore damp papers
+  - Remove damp papers
+  - Examine damp papers
+  - Sift through damp papers
+entry:
+  completed: remove_second_drawer
+---
 
-"text_variations":
-Take out damp papers, Take damp papers, Pick up damp papers, Inspect damp papers, Explore damp papers, Remove damp papers, Examine damp papers, Sift through damp papers,
+As you try picking up the {{style:emphasis|damp papers}} they fall through your fingers into a sloppy mess on the floor.
 
-"result":
+@cue sfx: wet_paper_falls_on_floor
 
-"As you try picking up the ==damp papers== they fall through your fingers into a ==SFX: wet paper falls on floor== sloppy mess on the floor."
-
-"“Charming.”"
-
-"requirements": remove_second_drawer
+Charming.

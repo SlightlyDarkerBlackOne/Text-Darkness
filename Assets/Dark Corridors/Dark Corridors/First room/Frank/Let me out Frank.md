@@ -1,11 +1,17 @@
-"id": let_me_out_frank
+---
+id: let_me_out_frank
+type: interaction
+scope: room_local
+room: first_room
+feature: frank
+aliases:
+  - Let me out
+  - Help me escape
+  - Unlock the door
+entry:
+  completed: call_out_to_frank
+---
 
-"text_variations":
-Let me out, Help me escape, Unlock the door,
+Let me out, I’ll die in here.
 
-"result":
-""Let me out, I’ll die in here.""
-
-"???: "(smirks) Who are you?""
-
-"requirements": call_out_to_frank 
+???: (smirks) Who are you?
