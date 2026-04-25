@@ -166,8 +166,8 @@ namespace EventsCalendar.Runtime
 
         private static string BuildPriceIncreaseInfo(TicketmasterEvent _event)
         {
-            if (!TryParseSalesDate(_event?.sales?.PublicSales?.startDateTime, out DateTime salesStart) ||
-                !TryParseSalesDate(_event?.sales?.PublicSales?.endDateTime, out DateTime salesEnd))
+            if (!TryParseSalesDate(_event?.sales?.publicSales?.startDateTime, out DateTime salesStart) ||
+                !TryParseSalesDate(_event?.sales?.publicSales?.endDateTime, out DateTime salesEnd))
             {
                 return EventCalendarConstants.Calendar.NotAvailable;
             }
