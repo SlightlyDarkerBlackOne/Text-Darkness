@@ -86,16 +86,36 @@ namespace EventsCalendar.Runtime
         public static class Ui
         {
             public const string CanvasName = "EventsCalendarCanvas";
-            public const string PanelName = "EventsCalendarPanel";
-            public const string TitleText = "Events Calendar";
+            public const string RootName = "EventsCalendarRoot";
+            public const string LandingPanelName = "EventsCalendarLandingPage";
+            public const string CalendarPanelName = "EventsCalendarImportPage";
+            public const string CardName = "EventsCalendarCard";
+            public const string AccentName = "EventsCalendarAccent";
+            public const string HeroEyebrow = "Live music planner";
+            public const string LandingTitle = "Find events. Sync nights out.";
+            public const string LandingSubtitle = "Discover concerts by style and selected period, then send the essential event details straight to Google Calendar.";
+            public const string SubscriptionPrice = "5,99 EUR";
+            public const string SubscriptionPeriod = "per month";
+            public const string SubscriptionLabel = "Subscription";
+            public const string PrimaryCallToAction = "Start subscription";
+            public const string SecondaryCallToAction = "Open calendar importer";
+            public const string CalendarTitle = "Calendar importer";
+            public const string CalendarSubtitle = "Pick a date range and music style, then import matching events to Google Calendar.";
             public const string StartDateLabel = "Start date";
             public const string EndDateLabel = "End date";
             public const string StyleLabel = "Music style";
             public const string DatePlaceholder = "yyyy-MM-dd";
+            public const string StylePlaceholder = "All, Techno, Rock...";
             public const string DateFormat = "yyyy-MM-dd";
+            public const string BackButtonName = "BackToLandingButton";
+            public const string BackButtonText = "Back";
+            public const string StartSubscriptionButtonName = "StartSubscriptionButton";
+            public const string OpenCalendarButtonName = "OpenCalendarButton";
             public const string ImportButtonName = "ImportEventsButton";
             public const string ImportButtonText = "Import to Google Calendar";
             public const string TextObjectName = "Text";
+            public const string InputTextObjectName = "InputText";
+            public const string PlaceholderObjectName = "Placeholder";
         }
 
         public static class Status

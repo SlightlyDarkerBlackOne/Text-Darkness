@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace EventsCalendar.Runtime
 {
     /// <summary>
-    /// Coordinates the scene UI action that searches music events and imports them into Google Calendar.
+    /// Coordinates the landing and calendar importer UI flow for searching music events and importing them into Google Calendar.
     /// </summary>
     public sealed class EventsCalendarSceneController : MonoBehaviour
     {
@@ -22,10 +22,24 @@ namespace EventsCalendar.Runtime
         [SerializeField] private string m_googleCalendarId = EventCalendarConstants.GoogleCalendar.PrimaryCalendarId;
         [SerializeField] private int m_maxEvents = EventCalendarConstants.DefaultMaxEvents;
         [SerializeField] private bool m_createUiOnStart = true;
+        [SerializeField] private GameObject m_landingPanel;
+        [SerializeField] private GameObject m_calendarPanel;
+        [SerializeField] private Button m_startSubscriptionButton;
+        [SerializeField] private Button m_openCalendarButton;
+        [SerializeField] private Button m_backButton;
 
         private IEventSearchProvider m_eventSearchProvider;
         private ICalendarEventImporter m_calendarEventImporter;
         private bool m_isImporting;
+
+        private static readonly Color s_backgroundColor = new Color(0.025f, 0.03f, 0.055f, 0.98f);
+        private static readonly Color s_cardColor = new Color(0.075f, 0.085f, 0.13f, 0.96f);
+        private static readonly Color s_elevatedCardColor = new Color(0.105f, 0.12f, 0.18f, 0.98f);
+        private static readonly Color s_primaryColor = new Color(0.42f, 0.34f, 1f, 1f);
+        private static readonly Color s_secondaryColor = new Color(0.08f, 0.78f, 0.68f, 1f);
+        private static readonly Color s_textColor = new Color(0.94f, 0.96f, 1f, 1f);
+        private static readonly Color s_mutedTextColor = new Color(0.66f, 0.72f, 0.84f, 1f);
+        private static readonly Color s_inputColor = new Color(0.96f, 0.97f, 1f, 1f);
 
         /// <summary>
         /// Injects event search and calendar import services for tests or custom scene composition.
@@ -63,17 +77,15 @@ namespace EventsCalendar.Runtime
                 return;
             }
 
-            ConfigureDefaultDates();
-            m_importButton.onClick.AddListener(ImportSelectedEvents);
+            ConfigureDefaultFields();
+            RegisterButtonHandlers();
+            ShowLandingPage();
             SetStatus(EventCalendarConstants.Status.Ready);
         }
 
         private void OnDestroy()
         {
-            if (m_importButton != null)
-            {
-                m_importButton.onClick.RemoveListener(ImportSelectedEvents);
-            }
+            RemoveButtonHandlers();
         }
 
         private bool HasRequiredUi()
@@ -82,7 +94,9 @@ namespace EventsCalendar.Runtime
                 m_importButton != null &&
                 m_startDateInput != null &&
                 m_endDateInput != null &&
-                m_musicStyleInput != null;
+                m_musicStyleInput != null &&
+                m_landingPanel != null &&
+                m_calendarPanel != null;
         }
 
         /// <summary>
@@ -198,15 +212,7 @@ namespace EventsCalendar.Runtime
             return true;
         }
 
-        private void ConfigureMusicStyleInput()
-        {
-            if (string.IsNullOrWhiteSpace(m_musicStyleInput.text))
-            {
-                m_musicStyleInput.text = EventCalendarConstants.MusicStyles.All;
-            }
-        }
-
-        private void ConfigureDefaultDates()
+        private void ConfigureDefaultFields()
         {
             if (string.IsNullOrWhiteSpace(m_startDateInput.text))
             {
@@ -217,6 +223,66 @@ namespace EventsCalendar.Runtime
             {
                 m_endDateInput.text = DateTime.Today.AddDays(EventCalendarConstants.DefaultSearchDays).ToString(EventCalendarConstants.Ui.DateFormat);
             }
+
+            if (string.IsNullOrWhiteSpace(m_musicStyleInput.text))
+            {
+                m_musicStyleInput.text = EventCalendarConstants.MusicStyles.All;
+            }
+        }
+
+        private void RegisterButtonHandlers()
+        {
+            m_importButton.onClick.AddListener(ImportSelectedEvents);
+
+            if (m_startSubscriptionButton != null)
+            {
+                m_startSubscriptionButton.onClick.AddListener(ShowCalendarPage);
+            }
+
+            if (m_openCalendarButton != null)
+            {
+                m_openCalendarButton.onClick.AddListener(ShowCalendarPage);
+            }
+
+            if (m_backButton != null)
+            {
+                m_backButton.onClick.AddListener(ShowLandingPage);
+            }
+        }
+
+        private void RemoveButtonHandlers()
+        {
+            if (m_importButton != null)
+            {
+                m_importButton.onClick.RemoveListener(ImportSelectedEvents);
+            }
+
+            if (m_startSubscriptionButton != null)
+            {
+                m_startSubscriptionButton.onClick.RemoveListener(ShowCalendarPage);
+            }
+
+            if (m_openCalendarButton != null)
+            {
+                m_openCalendarButton.onClick.RemoveListener(ShowCalendarPage);
+            }
+
+            if (m_backButton != null)
+            {
+                m_backButton.onClick.RemoveListener(ShowLandingPage);
+            }
+        }
+
+        private void ShowLandingPage()
+        {
+            m_landingPanel.SetActive(true);
+            m_calendarPanel.SetActive(false);
+        }
+
+        private void ShowCalendarPage()
+        {
+            m_landingPanel.SetActive(false);
+            m_calendarPanel.SetActive(true);
         }
 
         private void EnsureUi()
@@ -224,112 +290,164 @@ namespace EventsCalendar.Runtime
             Canvas canvas = FindFirstObjectByType<Canvas>();
             if (canvas == null)
             {
-                GameObject canvasObject = new GameObject(EventCalendarConstants.Ui.CanvasName);
+                GameObject canvasObject = new GameObject(EventCalendarConstants.Ui.CanvasName, typeof(RectTransform));
                 canvas = canvasObject.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                 canvasObject.AddComponent<CanvasScaler>();
                 canvasObject.AddComponent<GraphicRaycaster>();
             }
 
-            if (m_statusText != null && m_importButton != null && m_startDateInput != null && m_endDateInput != null && m_musicStyleInput != null)
+            if (HasRequiredUi())
             {
                 return;
             }
 
-            GameObject panel = CreatePanel(canvas.transform);
-            m_startDateInput ??= CreateInput(panel.transform, EventCalendarConstants.Ui.StartDateLabel, new Vector2(0f, 90f));
-            m_endDateInput ??= CreateInput(panel.transform, EventCalendarConstants.Ui.EndDateLabel, new Vector2(0f, 35f));
-            m_musicStyleInput ??= CreateInput(panel.transform, EventCalendarConstants.Ui.StyleLabel, new Vector2(0f, -20f));
-            m_importButton ??= CreateButton(panel.transform, new Vector2(0f, -80f));
-            m_statusText ??= CreateText(panel.transform, EventCalendarConstants.Status.Ready, new Vector2(0f, -135f), 18);
+            GameObject root = CreateFullScreenObject(EventCalendarConstants.Ui.RootName, canvas.transform);
+            AddImage(root, s_backgroundColor);
+            m_landingPanel = CreateLandingPanel(root.transform);
+            m_calendarPanel = CreateCalendarPanel(root.transform);
         }
 
-        private GameObject CreatePanel(Transform parent)
+        private GameObject CreateLandingPanel(Transform parent)
         {
-            GameObject panel = new GameObject(EventCalendarConstants.Ui.PanelName);
-            panel.transform.SetParent(parent, false);
+            GameObject panel = CreateFullScreenObject(EventCalendarConstants.Ui.LandingPanelName, parent);
+            GameObject card = CreateCard(panel.transform, new Vector2(0f, 0f), new Vector2(860f, 560f));
+            CreateAccent(card.transform, new Vector2(-410f, 0f), new Vector2(8f, 500f), s_secondaryColor);
+            CreateText(card.transform, EventCalendarConstants.Ui.HeroEyebrow, new Vector2(-180f, 200f), new Vector2(420f, 34f), 18, s_secondaryColor, TextAlignmentOptions.Left);
+            CreateText(card.transform, EventCalendarConstants.Ui.LandingTitle, new Vector2(-120f, 130f), new Vector2(540f, 96f), 44, s_textColor, TextAlignmentOptions.Left);
+            CreateText(card.transform, EventCalendarConstants.Ui.LandingSubtitle, new Vector2(-120f, 28f), new Vector2(560f, 92f), 20, s_mutedTextColor, TextAlignmentOptions.Left);
 
-            Image image = panel.AddComponent<Image>();
-            image.color = new Color(0.06f, 0.06f, 0.08f, 0.92f);
+            GameObject priceCard = CreateCard(card.transform, new Vector2(245f, 82f), new Vector2(250f, 220f), s_elevatedCardColor);
+            CreateText(priceCard.transform, EventCalendarConstants.Ui.SubscriptionLabel, new Vector2(0f, 66f), new Vector2(210f, 30f), 18, s_mutedTextColor, TextAlignmentOptions.Center);
+            CreateText(priceCard.transform, EventCalendarConstants.Ui.SubscriptionPrice, new Vector2(0f, 8f), new Vector2(220f, 62f), 38, s_textColor, TextAlignmentOptions.Center);
+            CreateText(priceCard.transform, EventCalendarConstants.Ui.SubscriptionPeriod, new Vector2(0f, -42f), new Vector2(210f, 28f), 16, s_mutedTextColor, TextAlignmentOptions.Center);
 
-            RectTransform rectTransform = panel.GetComponent<RectTransform>();
-            rectTransform.anchorMin = new Vector2(1f, 1f);
-            rectTransform.anchorMax = new Vector2(1f, 1f);
-            rectTransform.pivot = new Vector2(1f, 1f);
-            rectTransform.anchoredPosition = new Vector2(-24f, -24f);
-            rectTransform.sizeDelta = new Vector2(360f, 300f);
-
-            CreateText(panel.transform, EventCalendarConstants.Ui.TitleText, new Vector2(0f, 132f), 24);
+            m_startSubscriptionButton = CreateButton(card.transform, EventCalendarConstants.Ui.StartSubscriptionButtonName, EventCalendarConstants.Ui.PrimaryCallToAction, new Vector2(-210f, -190f), new Vector2(230f, 54f), s_primaryColor);
+            m_openCalendarButton = CreateButton(card.transform, EventCalendarConstants.Ui.OpenCalendarButtonName, EventCalendarConstants.Ui.SecondaryCallToAction, new Vector2(55f, -190f), new Vector2(260f, 54f), s_elevatedCardColor);
             return panel;
         }
 
-        private TMP_InputField CreateInput(Transform parent, string label, Vector2 position)
+        private GameObject CreateCalendarPanel(Transform parent)
         {
-            CreateText(parent, label, position + new Vector2(-95f, 22f), 15);
+            GameObject panel = CreateFullScreenObject(EventCalendarConstants.Ui.CalendarPanelName, parent);
+            GameObject card = CreateCard(panel.transform, new Vector2(0f, 0f), new Vector2(760f, 560f));
+            CreateAccent(card.transform, new Vector2(0f, 258f), new Vector2(680f, 5f), s_primaryColor);
+            CreateText(card.transform, EventCalendarConstants.Ui.CalendarTitle, new Vector2(-120f, 198f), new Vector2(470f, 54f), 34, s_textColor, TextAlignmentOptions.Left);
+            CreateText(card.transform, EventCalendarConstants.Ui.CalendarSubtitle, new Vector2(-60f, 142f), new Vector2(590f, 58f), 18, s_mutedTextColor, TextAlignmentOptions.Left);
 
-            GameObject inputObject = new GameObject(label);
+            m_startDateInput = CreateInput(card.transform, EventCalendarConstants.Ui.StartDateLabel, EventCalendarConstants.Ui.DatePlaceholder, new Vector2(-170f, 56f));
+            m_endDateInput = CreateInput(card.transform, EventCalendarConstants.Ui.EndDateLabel, EventCalendarConstants.Ui.DatePlaceholder, new Vector2(170f, 56f));
+            m_musicStyleInput = CreateInput(card.transform, EventCalendarConstants.Ui.StyleLabel, EventCalendarConstants.Ui.StylePlaceholder, new Vector2(0f, -32f));
+            m_importButton = CreateButton(card.transform, EventCalendarConstants.Ui.ImportButtonName, EventCalendarConstants.Ui.ImportButtonText, new Vector2(0f, -126f), new Vector2(340f, 54f), s_primaryColor);
+            m_backButton = CreateButton(card.transform, EventCalendarConstants.Ui.BackButtonName, EventCalendarConstants.Ui.BackButtonText, new Vector2(-290f, -218f), new Vector2(120f, 42f), s_elevatedCardColor);
+            m_statusText = CreateText(card.transform, EventCalendarConstants.Status.Ready, new Vector2(80f, -218f), new Vector2(500f, 46f), 17, s_mutedTextColor, TextAlignmentOptions.Left);
+            return panel;
+        }
+
+        private GameObject CreateFullScreenObject(string objectName, Transform parent)
+        {
+            GameObject gameObject = new GameObject(objectName, typeof(RectTransform));
+            gameObject.transform.SetParent(parent, false);
+
+            RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+
+            return gameObject;
+        }
+
+        private GameObject CreateCard(Transform parent, Vector2 position, Vector2 size)
+        {
+            return CreateCard(parent, position, size, s_cardColor);
+        }
+
+        private GameObject CreateCard(Transform parent, Vector2 position, Vector2 size, Color color)
+        {
+            GameObject card = new GameObject(EventCalendarConstants.Ui.CardName, typeof(RectTransform));
+            card.transform.SetParent(parent, false);
+            AddImage(card, color);
+
+            RectTransform rectTransform = card.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = position;
+            rectTransform.sizeDelta = size;
+
+            return card;
+        }
+
+        private void CreateAccent(Transform parent, Vector2 position, Vector2 size, Color color)
+        {
+            GameObject accent = new GameObject(EventCalendarConstants.Ui.AccentName, typeof(RectTransform));
+            accent.transform.SetParent(parent, false);
+            AddImage(accent, color);
+
+            RectTransform rectTransform = accent.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = position;
+            rectTransform.sizeDelta = size;
+        }
+
+        private TMP_InputField CreateInput(Transform parent, string label, string placeholderText, Vector2 position)
+        {
+            CreateText(parent, label, position + new Vector2(-92f, 34f), new Vector2(240f, 26f), 15, s_mutedTextColor, TextAlignmentOptions.Left);
+
+            GameObject inputObject = new GameObject(label, typeof(RectTransform));
             inputObject.transform.SetParent(parent, false);
-
-            Image image = inputObject.AddComponent<Image>();
-            image.color = Color.white;
+            AddImage(inputObject, s_inputColor);
 
             TMP_InputField inputField = inputObject.AddComponent<TMP_InputField>();
             RectTransform inputRect = inputObject.GetComponent<RectTransform>();
             inputRect.anchoredPosition = position;
-            inputRect.sizeDelta = new Vector2(250f, 34f);
+            inputRect.sizeDelta = new Vector2(280f, 42f);
 
-            TextMeshProUGUI text = CreateText(inputObject.transform, string.Empty, Vector2.zero, 18);
-            text.color = Color.black;
-            text.alignment = TextAlignmentOptions.MidlineLeft;
-            text.rectTransform.offsetMin = new Vector2(8f, 0f);
-            text.rectTransform.offsetMax = new Vector2(-8f, 0f);
+            TextMeshProUGUI text = CreateText(inputObject.transform, string.Empty, Vector2.zero, new Vector2(248f, 34f), 17, Color.black, TextAlignmentOptions.MidlineLeft);
+            text.gameObject.name = EventCalendarConstants.Ui.InputTextObjectName;
             inputField.textComponent = text;
 
-            TextMeshProUGUI placeholder = CreateText(inputObject.transform, EventCalendarConstants.Ui.DatePlaceholder, Vector2.zero, 18);
-            placeholder.color = new Color(0.45f, 0.45f, 0.45f, 1f);
-            placeholder.alignment = TextAlignmentOptions.MidlineLeft;
-            placeholder.rectTransform.offsetMin = new Vector2(8f, 0f);
-            placeholder.rectTransform.offsetMax = new Vector2(-8f, 0f);
+            TextMeshProUGUI placeholder = CreateText(inputObject.transform, placeholderText, Vector2.zero, new Vector2(248f, 34f), 17, new Color(0.43f, 0.45f, 0.54f, 1f), TextAlignmentOptions.MidlineLeft);
+            placeholder.gameObject.name = EventCalendarConstants.Ui.PlaceholderObjectName;
             inputField.placeholder = placeholder;
 
             return inputField;
         }
 
-        private Button CreateButton(Transform parent, Vector2 position)
+        private Button CreateButton(Transform parent, string objectName, string labelValue, Vector2 position, Vector2 size, Color color)
         {
-            GameObject buttonObject = new GameObject(EventCalendarConstants.Ui.ImportButtonName);
+            GameObject buttonObject = new GameObject(objectName, typeof(RectTransform));
             buttonObject.transform.SetParent(parent, false);
-
-            Image image = buttonObject.AddComponent<Image>();
-            image.color = new Color(0.1f, 0.38f, 0.75f, 1f);
+            AddImage(buttonObject, color);
 
             Button button = buttonObject.AddComponent<Button>();
             RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = position;
-            rectTransform.sizeDelta = new Vector2(250f, 42f);
+            rectTransform.sizeDelta = size;
 
-            TextMeshProUGUI label = CreateText(buttonObject.transform, EventCalendarConstants.Ui.ImportButtonText, Vector2.zero, 18);
-            label.alignment = TextAlignmentOptions.Center;
-
+            CreateText(buttonObject.transform, labelValue, Vector2.zero, size, 18, s_textColor, TextAlignmentOptions.Center);
             return button;
         }
 
-        private TextMeshProUGUI CreateText(Transform parent, string value, Vector2 position, int fontSize)
+        private TextMeshProUGUI CreateText(Transform parent, string value, Vector2 position, Vector2 size, int fontSize, Color color, TextAlignmentOptions alignment)
         {
-            GameObject textObject = new GameObject(EventCalendarConstants.Ui.TextObjectName);
+            GameObject textObject = new GameObject(EventCalendarConstants.Ui.TextObjectName, typeof(RectTransform));
             textObject.transform.SetParent(parent, false);
 
             TextMeshProUGUI text = textObject.AddComponent<TextMeshProUGUI>();
             text.text = value;
             text.fontSize = fontSize;
-            text.color = Color.white;
-            text.alignment = TextAlignmentOptions.Center;
+            text.color = color;
+            text.alignment = alignment;
 
             RectTransform rectTransform = text.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = position;
-            rectTransform.sizeDelta = new Vector2(320f, 34f);
+            rectTransform.sizeDelta = size;
 
             return text;
+        }
+
+        private void AddImage(GameObject gameObject, Color color)
+        {
+            Image image = gameObject.AddComponent<Image>();
+            image.color = color;
         }
 
         private void ResetImportState()
