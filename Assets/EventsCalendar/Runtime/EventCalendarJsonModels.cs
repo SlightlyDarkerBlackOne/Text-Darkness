@@ -23,9 +23,13 @@ namespace EventsCalendar.Runtime
         public string name;
         public string url;
         public string info;
+        public string pleaseNote;
+        public TicketmasterPromoter promoter;
         public TicketmasterDates dates;
+        public TicketmasterSales sales;
         public TicketmasterEmbeddedVenues _embedded;
         public TicketmasterClassification[] classifications;
+        public TicketmasterPriceRange[] priceRanges;
     }
 
     [Serializable]
@@ -46,6 +50,7 @@ namespace EventsCalendar.Runtime
     public sealed class TicketmasterEmbeddedVenues
     {
         public TicketmasterVenue[] venues;
+        public TicketmasterAttraction[] attractions;
     }
 
     [Serializable]
@@ -55,6 +60,14 @@ namespace EventsCalendar.Runtime
         public TicketmasterCity city;
         public TicketmasterCountry country;
         public TicketmasterAddress address;
+        public TicketmasterLocation location;
+    }
+
+    [Serializable]
+    public sealed class TicketmasterLocation
+    {
+        public string longitude;
+        public string latitude;
     }
 
     [Serializable]
@@ -86,6 +99,43 @@ namespace EventsCalendar.Runtime
     public sealed class TicketmasterGenre
     {
         public string name;
+    }
+
+    [Serializable]
+    public sealed class TicketmasterAttraction
+    {
+        public string name;
+        public string url;
+        public TicketmasterClassification[] classifications;
+    }
+
+    [Serializable]
+    public sealed class TicketmasterPriceRange
+    {
+        public string currency;
+        public float min;
+        public float max;
+    }
+
+    [Serializable]
+    public sealed class TicketmasterSales
+    {
+        [Newtonsoft.Json.JsonProperty("public")]
+        public TicketmasterPublicSales publicSales;
+    }
+
+    [Serializable]
+    public sealed class TicketmasterPromoter
+    {
+        public string name;
+        public string description;
+    }
+
+    [Serializable]
+    public sealed class TicketmasterPublicSales
+    {
+        public string startDateTime;
+        public string endDateTime;
     }
 
     [Serializable]
@@ -121,12 +171,26 @@ namespace EventsCalendar.Runtime
                 EventCalendarConstants.Calendar.ImportedDescriptionHeader
             };
 
-            AddIfPresent(descriptionParts, musicEvent.Description);
-            AddIfPresent(descriptionParts, musicEvent.Url);
-            AddIfPresent(descriptionParts, musicEvent.Style);
-            AddIfPresent(descriptionParts, musicEvent.VenueName);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.DurationLabel, musicEvent.DurationText);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.PriceLabel, musicEvent.TicketPrice);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.PriceIncreaseLabel, musicEvent.PriceIncreaseInfo);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.LineupLabel, musicEvent.Lineup);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.PerformerDescriptionLabel, musicEvent.PerformerDescription);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.InterestingFactLabel, musicEvent.InterestingFact);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.VenueLabel, musicEvent.VenueName);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.GoogleMapsLabel, musicEvent.GoogleMapsUrl);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.EventUrlLabel, musicEvent.Url);
+            AddLabeledValue(descriptionParts, EventCalendarConstants.Calendar.StyleLabel, musicEvent.Style);
 
             return string.Join(EventCalendarConstants.Calendar.DescriptionLineSeparator, descriptionParts);
+        }
+
+        private static void AddLabeledValue(List<string> values, string label, string value)
+        {
+            string displayValue = string.IsNullOrWhiteSpace(value)
+                ? EventCalendarConstants.Calendar.NotAvailable
+                : value;
+            values.Add(string.Format(EventCalendarConstants.Calendar.LabelFormat, label, displayValue));
         }
 
         private static void AddIfPresent(List<string> values, string value)

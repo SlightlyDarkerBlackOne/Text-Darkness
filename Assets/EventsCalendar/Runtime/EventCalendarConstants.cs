@@ -57,6 +57,23 @@ namespace EventsCalendar.Runtime
             public const string AddressSeparator = ", ";
             public const string ImportedDescriptionHeader = "Imported from Events Calendar.";
             public const string DescriptionLineSeparator = "\n";
+            public const string NotAvailable = "Not available from provider";
+            public const string GoogleMapsSearchUrlFormat = "https://www.google.com/maps/search/?api=1&query={0}";
+            public const string TimeRangeFormat = "{0:yyyy-MM-dd HH:mm} - {1:yyyy-MM-dd HH:mm}";
+            public const string PriceFormat = "{0:0.##} - {1:0.##} {2}";
+            public const string SinglePriceFormat = "{0:0.##} {1}";
+            public const string LabelFormat = "{0}: {1}";
+            public const string PriceLabel = "Ticket price";
+            public const string PriceIncreaseLabel = "Price increase";
+            public const string PerformerDescriptionLabel = "DJ / performer description";
+            public const string InterestingFactLabel = "Interesting fact";
+            public const string GoogleMapsLabel = "Google Maps";
+            public const string DurationLabel = "Duration";
+            public const string LineupLabel = "Lineup";
+            public const string EventUrlLabel = "Event URL";
+            public const string StyleLabel = "Style";
+            public const string VenueLabel = "Venue";
+            public const string SalesWindowFormat = "Sales from {0:yyyy-MM-dd HH:mm} to {1:yyyy-MM-dd HH:mm}";
         }
 
         public static class MusicStyles

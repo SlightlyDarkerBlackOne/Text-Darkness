@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -35,7 +36,7 @@ namespace EventsCalendar.Runtime
                 yield break;
             }
 
-            TicketmasterDiscoveryResponse response = JsonUtility.FromJson<TicketmasterDiscoveryResponse>(request.downloadHandler.text);
+            TicketmasterDiscoveryResponse response = JsonConvert.DeserializeObject<TicketmasterDiscoveryResponse>(request.downloadHandler.text);
             _onCompleted?.Invoke(MapEvents(response));
         }
 
@@ -90,7 +91,13 @@ namespace EventsCalendar.Runtime
                     ticketmasterEvent?.url,
                     startUtc,
                     endUtc,
-                    ticketmasterEvent?.info));
+                    ticketmasterEvent?.info,
+                    BuildTicketPrice(ticketmasterEvent),
+                    BuildPriceIncreaseInfo(ticketmasterEvent),
+                    BuildPerformerDescription(ticketmasterEvent),
+                    BuildInterestingFact(ticketmasterEvent),
+                    BuildGoogleMapsLink(venue),
+                    BuildLineup(ticketmasterEvent)));
             }
 
             return events;
@@ -136,6 +143,102 @@ namespace EventsCalendar.Runtime
             AddIfPresent(addressParts, _venue.country?.name);
 
             return string.Join(EventCalendarConstants.Calendar.AddressSeparator, addressParts);
+        }
+
+        private static string BuildTicketPrice(TicketmasterEvent _event)
+        {
+            if (_event?.priceRanges == null || _event.priceRanges.Length == 0)
+            {
+                return EventCalendarConstants.Calendar.NotAvailable;
+            }
+
+            TicketmasterPriceRange priceRange = _event.priceRanges[0];
+            if (priceRange.min > 0f && priceRange.max > 0f && Math.Abs(priceRange.max - priceRange.min) > float.Epsilon)
+            {
+                return string.Format(EventCalendarConstants.Calendar.PriceFormat, priceRange.min, priceRange.max, priceRange.currency);
+            }
+
+            float price = priceRange.min > 0f ? priceRange.min : priceRange.max;
+            return price > 0f
+                ? string.Format(EventCalendarConstants.Calendar.SinglePriceFormat, price, priceRange.currency)
+                : EventCalendarConstants.Calendar.NotAvailable;
+        }
+
+        private static string BuildPriceIncreaseInfo(TicketmasterEvent _event)
+        {
+            if (!TryParseSalesDate(_event?.sales?.PublicSales?.startDateTime, out DateTime salesStart) ||
+                !TryParseSalesDate(_event?.sales?.PublicSales?.endDateTime, out DateTime salesEnd))
+            {
+                return EventCalendarConstants.Calendar.NotAvailable;
+            }
+
+            return string.Format(EventCalendarConstants.Calendar.SalesWindowFormat, salesStart.ToLocalTime(), salesEnd.ToLocalTime());
+        }
+
+        private static string BuildPerformerDescription(TicketmasterEvent _event)
+        {
+            List<string> descriptions = new List<string>();
+            AddIfPresent(descriptions, _event?.info);
+            AddIfPresent(descriptions, _event?.pleaseNote);
+            return descriptions.Count > 0
+                ? string.Join(EventCalendarConstants.Calendar.DescriptionLineSeparator, descriptions)
+                : EventCalendarConstants.Calendar.NotAvailable;
+        }
+
+        private static string BuildInterestingFact(TicketmasterEvent _event)
+        {
+            TicketmasterPromoter promoter = _event?.promoter;
+            if (!string.IsNullOrWhiteSpace(promoter?.description))
+            {
+                return promoter.description;
+            }
+
+            if (!string.IsNullOrWhiteSpace(promoter?.name))
+            {
+                return promoter.name;
+            }
+
+            return EventCalendarConstants.Calendar.NotAvailable;
+        }
+
+        private static string BuildGoogleMapsLink(TicketmasterVenue _venue)
+        {
+            string mapsQuery = BuildMapsQuery(_venue);
+            return string.IsNullOrWhiteSpace(mapsQuery)
+                ? EventCalendarConstants.Calendar.NotAvailable
+                : string.Format(EventCalendarConstants.Calendar.GoogleMapsSearchUrlFormat, UnityWebRequest.EscapeURL(mapsQuery));
+        }
+
+        private static string BuildMapsQuery(TicketmasterVenue _venue)
+        {
+            if (!string.IsNullOrWhiteSpace(_venue?.location?.latitude) && !string.IsNullOrWhiteSpace(_venue.location.longitude))
+            {
+                return $"{_venue.location.latitude},{_venue.location.longitude}";
+            }
+
+            return BuildAddress(_venue);
+        }
+
+        private static string BuildLineup(TicketmasterEvent _event)
+        {
+            List<string> lineup = new List<string>();
+
+            if (_event?._embedded?.attractions != null)
+            {
+                foreach (TicketmasterAttraction attraction in _event._embedded.attractions)
+                {
+                    AddIfPresent(lineup, attraction?.name);
+                }
+            }
+
+            return lineup.Count > 0
+                ? string.Join(EventCalendarConstants.Calendar.AddressSeparator, lineup)
+                : EventCalendarConstants.Calendar.NotAvailable;
+        }
+
+        private static bool TryParseSalesDate(string _value, out DateTime dateTime)
+        {
+            return DateTime.TryParse(_value, null, System.Globalization.DateTimeStyles.AdjustToUniversal, out dateTime);
         }
 
         private static string ResolveStyle(TicketmasterEvent _event)
