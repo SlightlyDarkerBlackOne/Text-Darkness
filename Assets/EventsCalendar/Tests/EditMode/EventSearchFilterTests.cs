@@ -1,5 +1,8 @@
 using System;
-using EventsCalendar.Runtime;
+using EventsCalendar.Application;
+using EventsCalendar.Domain;
+using EventsCalendar.Infrastructure.GoogleCalendar;
+using EventsCalendar.Shared;
 using NUnit.Framework;
 
 public sealed class EventSearchFilterTests

@@ -1,7 +1,7 @@
 using System;
-using UnityEngine;
+using EventsCalendar.Shared;
 
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Domain
 {
     /// <summary>
     /// Event data imported from an external provider and mapped to Google Calendar.
@@ -9,21 +9,21 @@ namespace EventsCalendar.Runtime
     [Serializable]
     public sealed class MusicEvent
     {
-        [SerializeField] private string m_externalId;
-        [SerializeField] private string m_title;
-        [SerializeField] private string m_style;
-        [SerializeField] private string m_venueName;
-        [SerializeField] private string m_location;
-        [SerializeField] private string m_url;
-        [SerializeField] private DateTime m_startUtc;
-        [SerializeField] private DateTime m_endUtc;
-        [SerializeField] private string m_description;
-        [SerializeField] private string m_ticketPrice;
-        [SerializeField] private string m_priceIncreaseInfo;
-        [SerializeField] private string m_performerDescription;
-        [SerializeField] private string m_interestingFact;
-        [SerializeField] private string m_googleMapsUrl;
-        [SerializeField] private string m_lineup;
+        private readonly string m_externalId;
+        private readonly string m_title;
+        private readonly string m_style;
+        private readonly string m_venueName;
+        private readonly string m_location;
+        private readonly string m_url;
+        private readonly DateTime m_startUtc;
+        private readonly DateTime m_endUtc;
+        private readonly string m_description;
+        private readonly string m_ticketPrice;
+        private readonly string m_priceIncreaseInfo;
+        private readonly string m_performerDescription;
+        private readonly string m_interestingFact;
+        private readonly string m_googleMapsUrl;
+        private readonly string m_lineup;
 
         public MusicEvent(
             string externalId,

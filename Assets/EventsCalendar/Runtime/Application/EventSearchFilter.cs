@@ -1,6 +1,7 @@
 using System;
+using EventsCalendar.Shared;
 
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Application
 {
     /// <summary>
     /// Search criteria for music events.

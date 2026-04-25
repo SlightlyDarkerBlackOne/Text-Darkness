@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Text;
-using UnityEngine;
+using EventsCalendar.Application;
+using EventsCalendar.Domain;
+using EventsCalendar.Shared;
 using UnityEngine.Networking;
 
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Infrastructure.GoogleCalendar
 {
     /// <summary>
     /// Imports music events into a Google Calendar using the Google Calendar REST API.
@@ -38,7 +40,7 @@ namespace EventsCalendar.Runtime
 
             string calendarId = UnityWebRequest.EscapeURL(m_calendarId);
             string endpoint = string.Format(EventCalendarConstants.GoogleCalendar.InsertEventEndpointFormat, calendarId);
-            string payload = EventCalendarJsonModels.GoogleCalendarEventRequest.FromMusicEvent(musicEvent, m_timeZone).ToJson();
+            string payload = GoogleCalendarEventRequest.FromMusicEvent(musicEvent, m_timeZone).ToJson();
 
             using UnityWebRequest request = new UnityWebRequest(endpoint, UnityWebRequest.kHttpVerbPOST);
             byte[] body = Encoding.UTF8.GetBytes(payload);

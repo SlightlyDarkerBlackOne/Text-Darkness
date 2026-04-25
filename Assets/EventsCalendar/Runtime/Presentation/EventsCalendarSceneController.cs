@@ -1,11 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using EventsCalendar.Application;
+using EventsCalendar.Domain;
+using EventsCalendar.Infrastructure.GoogleCalendar;
+using EventsCalendar.Infrastructure.Ticketmaster;
+using EventsCalendar.Shared;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Presentation
 {
     /// <summary>
     /// Coordinates the landing and calendar importer UI flow for searching music events and importing them into Google Calendar.

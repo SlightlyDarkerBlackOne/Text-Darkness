@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using EventsCalendar.Application;
+using EventsCalendar.Domain;
+using EventsCalendar.Shared;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Infrastructure.Ticketmaster
 {
     /// <summary>
     /// Searches public music events through Ticketmaster Discovery API.

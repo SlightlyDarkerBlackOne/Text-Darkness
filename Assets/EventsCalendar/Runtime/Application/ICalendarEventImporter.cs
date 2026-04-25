@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
-namespace EventsCalendar.Runtime
+using EventsCalendar.Domain;
+
+namespace EventsCalendar.Application
 {
     /// <summary>
     /// Imports normalized music events into an external calendar.
     /// </summary>
     public interface ICalendarEventImporter
     {
-        IEnumerator ImportAsync(MusicEvent musicEvent, System.Action<EventImportResult> completed);
+        IEnumerator ImportAsync(MusicEvent musicEvent, Action<EventImportResult> completed);
     }
 }

@@ -1,4 +1,4 @@
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Shared
 {
     public static class EventCalendarConstants
     {

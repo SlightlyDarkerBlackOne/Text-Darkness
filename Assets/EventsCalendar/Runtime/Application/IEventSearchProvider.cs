@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using EventsCalendar.Domain;
 
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Application
 {
     /// <summary>
     /// Searches external event sources for music events.

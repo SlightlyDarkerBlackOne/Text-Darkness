@@ -1,4 +1,4 @@
-namespace EventsCalendar.Runtime
+namespace EventsCalendar.Application
 {
     /// <summary>
     /// Represents one Google Calendar import attempt.
