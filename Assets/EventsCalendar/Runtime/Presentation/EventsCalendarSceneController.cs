@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EventsCalendar.Application;
 using EventsCalendar.Domain;
 using EventsCalendar.Infrastructure.GoogleCalendar;
+using EventsCalendar.Infrastructure.Llm;
 using EventsCalendar.Infrastructure.Ticketmaster;
 using EventsCalendar.Shared;
 using TMPro;
@@ -21,8 +22,12 @@ namespace EventsCalendar.Presentation
         [SerializeField] private TMP_InputField m_startDateInput;
         [SerializeField] private TMP_InputField m_endDateInput;
         [SerializeField] private TMP_InputField m_musicStyleInput;
+        [SerializeField] private TMP_InputField m_searchSourceInput;
         [SerializeField] private TextMeshProUGUI m_statusText;
         [SerializeField] private string m_ticketmasterApiKey;
+        [SerializeField] private string m_llmApiKey;
+        [SerializeField] private string m_llmModel = EventCalendarConstants.LargeLanguageModel.DefaultModel;
+        [SerializeField] private string m_llmEndpoint = EventCalendarConstants.LargeLanguageModel.DefaultChatCompletionsEndpoint;
         [SerializeField] private string m_googleAccessToken;
         [SerializeField] private string m_googleCalendarId = EventCalendarConstants.GoogleCalendar.PrimaryCalendarId;
         [SerializeField] private int m_maxEvents = EventCalendarConstants.DefaultMaxEvents;
@@ -59,7 +64,7 @@ namespace EventsCalendar.Presentation
         {
             if (m_eventSearchProvider == null)
             {
-                m_eventSearchProvider = new TicketmasterEventSearchProvider(m_ticketmasterApiKey);
+                m_eventSearchProvider = CreateEventSearchProvider(EventSearchSource.Ticketmaster);
             }
 
             if (m_calendarEventImporter == null)
@@ -100,6 +105,7 @@ namespace EventsCalendar.Presentation
                 m_startDateInput != null &&
                 m_endDateInput != null &&
                 m_musicStyleInput != null &&
+                m_searchSourceInput != null &&
                 m_landingPanel != null &&
                 m_calendarPanel != null;
         }
@@ -131,7 +137,8 @@ namespace EventsCalendar.Presentation
 
             IReadOnlyList<MusicEvent> foundEvents = Array.Empty<MusicEvent>();
             string searchError = string.Empty;
-            yield return m_eventSearchProvider.SearchEvents(
+            IEventSearchProvider searchProvider = CreateEventSearchProvider(ParseSearchSource());
+            yield return searchProvider.SearchEvents(
                 filter,
                 events => foundEvents = events,
                 errorMessage => searchError = errorMessage);
@@ -233,6 +240,28 @@ namespace EventsCalendar.Presentation
             {
                 m_musicStyleInput.text = EventCalendarConstants.MusicStyles.All;
             }
+
+            if (string.IsNullOrWhiteSpace(m_searchSourceInput.text))
+            {
+                m_searchSourceInput.text = EventCalendarConstants.SearchSources.Ticketmaster;
+            }
+        }
+
+        private EventSearchSource ParseSearchSource()
+        {
+            return string.Equals(
+                m_searchSourceInput.text,
+                EventCalendarConstants.SearchSources.Llm,
+                StringComparison.OrdinalIgnoreCase)
+                ? EventSearchSource.Llm
+                : EventSearchSource.Ticketmaster;
+        }
+
+        private IEventSearchProvider CreateEventSearchProvider(EventSearchSource searchSource)
+        {
+            return searchSource == EventSearchSource.Llm
+                ? new LlmEventSearchProvider(m_llmApiKey, m_llmEndpoint, m_llmModel)
+                : new TicketmasterEventSearchProvider(m_ticketmasterApiKey);
         }
 
         private void RegisterButtonHandlers()
@@ -342,7 +371,8 @@ namespace EventsCalendar.Presentation
 
             m_startDateInput = CreateInput(card.transform, EventCalendarConstants.Ui.StartDateLabel, EventCalendarConstants.Ui.DatePlaceholder, new Vector2(-170f, 56f));
             m_endDateInput = CreateInput(card.transform, EventCalendarConstants.Ui.EndDateLabel, EventCalendarConstants.Ui.DatePlaceholder, new Vector2(170f, 56f));
-            m_musicStyleInput = CreateInput(card.transform, EventCalendarConstants.Ui.StyleLabel, EventCalendarConstants.Ui.StylePlaceholder, new Vector2(0f, -32f));
+            m_musicStyleInput = CreateInput(card.transform, EventCalendarConstants.Ui.StyleLabel, EventCalendarConstants.Ui.StylePlaceholder, new Vector2(-170f, -32f));
+            m_searchSourceInput = CreateInput(card.transform, EventCalendarConstants.Ui.SearchSourceLabel, EventCalendarConstants.Ui.SearchSourcePlaceholder, new Vector2(170f, -32f));
             m_importButton = CreateButton(card.transform, EventCalendarConstants.Ui.ImportButtonName, EventCalendarConstants.Ui.ImportButtonText, new Vector2(0f, -126f), new Vector2(340f, 54f), s_primaryColor);
             m_backButton = CreateButton(card.transform, EventCalendarConstants.Ui.BackButtonName, EventCalendarConstants.Ui.BackButtonText, new Vector2(-290f, -218f), new Vector2(120f, 42f), s_elevatedCardColor);
             m_statusText = CreateText(card.transform, EventCalendarConstants.Status.Ready, new Vector2(80f, -218f), new Vector2(500f, 46f), 17, s_mutedTextColor, TextAlignmentOptions.Left);

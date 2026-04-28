@@ -42,6 +42,20 @@ namespace EventsCalendar.Shared
             public const string DateTimeFormat = "o";
         }
 
+        public static class LargeLanguageModel
+        {
+            public const string DefaultChatCompletionsEndpoint = "https://api.openai.com/v1/chat/completions";
+            public const string DefaultModel = "gpt-4o-mini";
+            public const float DefaultTemperature = 0.2f;
+            public const string SystemRole = "system";
+            public const string UserRole = "user";
+            public const string PromptDateFormat = "yyyy-MM-dd";
+            public const string PromptFormat = "Return JSON only. Find up to {0} music events between {1} and {2}. Style filter: {3}. Include title, style, venueName, location, url, startUtc, endUtc, description, ticketPrice, priceIncreaseInfo, performerDescription, interestingFact, googleMapsUrl, and lineup.";
+            public const string SystemPrompt = "You are an event discovery service. Return accurate public event data as compact JSON with an events array. Use ISO 8601 UTC date times. Use Not available from provider when a field cannot be verified.";
+            public const string MarkdownJsonFenceStart = "```json";
+            public const string MarkdownFenceEnd = "```";
+        }
+
         public static class Headers
         {
             public const string Authorization = "Authorization";
@@ -100,6 +114,12 @@ namespace EventsCalendar.Shared
             };
         }
 
+        public static class SearchSources
+        {
+            public const string Ticketmaster = "Ticketmaster";
+            public const string Llm = "LLM";
+        }
+
         public static class Ui
         {
             public const string CanvasName = "EventsCalendarCanvas";
@@ -121,8 +141,10 @@ namespace EventsCalendar.Shared
             public const string StartDateLabel = "Start date";
             public const string EndDateLabel = "End date";
             public const string StyleLabel = "Music style";
+            public const string SearchSourceLabel = "Search source";
             public const string DatePlaceholder = "yyyy-MM-dd";
             public const string StylePlaceholder = "All, Techno, Rock...";
+            public const string SearchSourcePlaceholder = "Ticketmaster or LLM";
             public const string DateFormat = "yyyy-MM-dd";
             public const string BackButtonName = "BackToLandingButton";
             public const string BackButtonText = "Back";
@@ -155,10 +177,13 @@ namespace EventsCalendar.Shared
         public static class Messages
         {
             public const string TicketmasterApiKeyMissing = "Ticketmaster API key is required.";
+            public const string LargeLanguageModelApiKeyMissing = "LLM API key is required.";
             public const string GoogleAccessTokenMissing = "Google OAuth access token is required.";
             public const string EventMissing = "Event is required.";
             public const string RequiredUiMissing = "Events Calendar UI references are missing.";
             public const string EventSearchFailedFormat = "Ticketmaster request failed: {0}";
+            public const string LargeLanguageModelRequestFailedFormat = "LLM request failed: {0}";
+            public const string LargeLanguageModelEmptyResponse = "LLM returned no event data.";
             public const string GoogleImportFailedFormat = "Google Calendar import failed: {0}";
         }
 

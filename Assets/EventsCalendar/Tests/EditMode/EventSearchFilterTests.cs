@@ -36,6 +36,12 @@ public sealed class EventSearchFilterTests
     }
 
     [Test]
+    public void EventSearchSource_Llm_IsAvailableAsAlternativeProvider()
+    {
+        Assert.AreEqual(1, (int)EventSearchSource.Llm);
+    }
+
+    [Test]
     public void GoogleCalendarRequest_FromMusicEvent_IncludesRichEventDetails()
     {
         MusicEvent musicEvent = new MusicEvent(
