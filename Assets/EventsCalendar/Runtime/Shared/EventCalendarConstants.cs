@@ -10,6 +10,7 @@ namespace EventsCalendar.Shared
             public const int MinimumResults = 1;
             public const int MaximumResults = 200;
             public const string AllStylesValue = "All";
+            public const string MultipleStylesSeparator = ", ";
         }
 
         public static class Ticketmaster
@@ -128,22 +129,37 @@ namespace EventsCalendar.Shared
             public const string CalendarPanelName = "EventsCalendarImportPage";
             public const string CardName = "EventsCalendarCard";
             public const string AccentName = "EventsCalendarAccent";
+            public const string ShellName = "EventsCalendarShell";
+            public const string HeroCardName = "EventsCalendarHeroCard";
+            public const string FormCardName = "EventsCalendarFormCard";
+            public const string MusicStyleDropdownButtonName = "MusicStyleDropdownButton";
+            public const string MusicStyleOptionsPanelName = "MusicStyleOptionsPanel";
+            public const string MusicStyleToggleNameFormat = "MusicStyleToggle_{0}";
+            public const string PreviewPanelName = "EventPreviewPanel";
+            public const string PreviewViewportName = "EventPreviewViewport";
+            public const string PreviewContentName = "EventPreviewContent";
+            public const string PreviewRowName = "EventPreviewRow";
+            public const string RetryFailedButtonName = "RetryFailedImportsButton";
+            public const string EventSystemName = "EventsCalendarEventSystem";
+            public const string CheckmarkObjectName = "Checkmark";
             public const string HeroEyebrow = "Live music planner";
             public const string LandingTitle = "Find events. Sync nights out.";
             public const string LandingSubtitle = "Discover concerts by style and selected period, then send the essential event details straight to Google Calendar.";
             public const string SubscriptionPrice = "5,99 EUR";
             public const string SubscriptionPeriod = "per month";
             public const string SubscriptionLabel = "Subscription";
+            public const string LandingFeatureTitle = "Plan faster";
+            public const string LandingFeatureDescription = "Search public live music data, enrich event details, and prepare calendar imports from one focused workflow.";
             public const string PrimaryCallToAction = "Start subscription";
             public const string SecondaryCallToAction = "Open calendar importer";
             public const string CalendarTitle = "Calendar importer";
-            public const string CalendarSubtitle = "Pick a date range and music style, then import matching events to Google Calendar.";
+            public const string CalendarSubtitle = "Pick a date range, select one or more styles, then import matching events to Google Calendar.";
             public const string StartDateLabel = "Start date";
             public const string EndDateLabel = "End date";
             public const string StyleLabel = "Music style";
             public const string SearchSourceLabel = "Search source";
             public const string DatePlaceholder = "yyyy-MM-dd";
-            public const string StylePlaceholder = "All, Techno, Rock...";
+            public const string StylePlaceholder = "Select music styles";
             public const string SearchSourcePlaceholder = "Ticketmaster or LLM";
             public const string DateFormat = "yyyy-MM-dd";
             public const string BackButtonName = "BackToLandingButton";
@@ -151,7 +167,16 @@ namespace EventsCalendar.Shared
             public const string StartSubscriptionButtonName = "StartSubscriptionButton";
             public const string OpenCalendarButtonName = "OpenCalendarButton";
             public const string ImportButtonName = "ImportEventsButton";
-            public const string ImportButtonText = "Import to Google Calendar";
+            public const string SearchButtonText = "Search events";
+            public const string ImportButtonText = "Import selected";
+            public const string RetryFailedButtonText = "Retry failed";
+            public const string PreviewTitle = "Preview events";
+            public const string PreviewEmptyText = "Search results will appear here before import.";
+            public const string PreviewRowFormat = "{0}\n{1} | {2}";
+            public const string DuplicateBadge = "Duplicate";
+            public const string ImportedBadge = "Imported";
+            public const string FailedBadge = "Failed";
+            public const string SelectedCountFormat = "{0} selected";
             public const string TextObjectName = "Text";
             public const string InputTextObjectName = "InputText";
             public const string PlaceholderObjectName = "Placeholder";
@@ -161,10 +186,13 @@ namespace EventsCalendar.Shared
         {
             public const string Ready = "Choose period and style, then import.";
             public const string Searching = "Searching events...";
+            public const string PreviewReadyFormat = "Found {0} events. Review and choose what to import.";
+            public const string NoEventsSelected = "Select at least one event before importing.";
             public const string NoEventsFound = "No events found for selected filters.";
             public const string SearchFailedFormat = "Event search failed: {0}";
-            public const string ImportingFormat = "Importing {0} events to Google Calendar...";
-            public const string ImportFinishedFormat = "Imported {0} events. Failed: {1}.";
+            public const string ImportingFormat = "Importing {0} selected events to Google Calendar...";
+            public const string ImportFinishedFormat = "Imported {0} events. Failed: {1}. Skipped duplicates: {2}.";
+            public const string RetryReadyFormat = "{0} failed imports are ready to retry.";
         }
 
         public static class Validation
